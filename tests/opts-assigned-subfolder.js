@@ -7,7 +7,7 @@ import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
 describe('opts-assigned', () => {
     const CACHE_FILE_DIR = 'geoip-subfolder/hello_there';
-    const CACHE_FILE_NAME = 'ip.log';
+    const CACHE_FILE_NAME = 'ips.log';
     const CACHE_FILE_SEPARATOR = ';;';
     const CACHE_FILE_NEWLINE = '\n';
 
@@ -20,8 +20,11 @@ describe('opts-assigned', () => {
         emoji: '🇨🇭',
         country: 'Switzerland',
         countryA2: 'CH',
+        region: 'Zurich',
         city: 'Zürich',
+        org: 'Quad9',
         isp: 'Quad9',
+        ispDomain: 'quad9.net',
     };
 
     removeCacheFolder(CACHE_FILE_DIR);

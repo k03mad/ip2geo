@@ -20,8 +20,11 @@ describe('opts-assigned', () => {
         emoji: '🇺🇸',
         country: 'United States',
         countryA2: 'US',
+        region: 'California',
         city: 'Mountain View',
+        org: 'Google LLC',
         isp: 'Google LLC',
+        ispDomain: 'google.com',
     };
 
     removeCacheFolder(CACHE_FILE_DIR);

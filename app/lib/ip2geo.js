@@ -13,15 +13,18 @@ const debug = _debug('mad:geoip');
  * @property {string} [country]
  * @property {string} [countryA2]
  * @property {string} [city]
+ * @property {string} [region]
+ * @property {string} [org]
  * @property {string} [isp]
+ * @property {string} [ispDomain]
  */
 
 const API = 'https://ipwho.is/';
 
-const CACHE_FILE_DIR = 'geoip';
-const CACHE_FILE_NAME = 'ip.log';
-const CACHE_FILE_SEPARATOR = ';;';
-const CACHE_FILE_NEWLINE = '\n';
+const DEFAULT_CACHE_FILE_DIR = 'geoip';
+const DEFAULT_CACHE_FILE_NAME = 'ips.log';
+const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
+const DEFAULT_CACHE_FILE_NEWLINE = '\n';
 
 const cacheMap = new Map();
 
@@ -30,8 +33,11 @@ const outputKeys = [
     'emoji',
     'country',
     'countryA2',
+    'region',
     'city',
+    'org',
     'isp',
+    'ispDomain',
 ];
 
 /**
@@ -106,10 +112,10 @@ const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSepara
  * @returns {Promise<GeoIpOutput>}
  */
 export default async (ip = '', {
-    cacheDir = CACHE_FILE_DIR,
-    cacheFileName = CACHE_FILE_NAME,
-    cacheFileSeparator = CACHE_FILE_SEPARATOR,
-    cacheFileNewline = CACHE_FILE_NEWLINE,
+    cacheDir = DEFAULT_CACHE_FILE_DIR,
+    cacheFileName = DEFAULT_CACHE_FILE_NAME,
+    cacheFileSeparator = DEFAULT_CACHE_FILE_SEPARATOR,
+    cacheFileNewline = DEFAULT_CACHE_FILE_NEWLINE,
 } = {}) => {
     if (ip) {
         const ipData = cacheMap.get(ip);
@@ -145,8 +151,11 @@ export default async (ip = '', {
         body?.flag?.emoji,
         body?.country,
         body?.country_code,
+        body?.region,
         body?.city,
+        body?.connection?.org,
         body?.connection?.isp,
+        body?.connection?.domain,
     ];
 
     const outputData = collectOutputData(usedData);

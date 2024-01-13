@@ -7,7 +7,7 @@ import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
 describe('opts-default', () => {
     const CACHE_FILE_DIR = 'geoip';
-    const CACHE_FILE_NAME = 'ip.log';
+    const CACHE_FILE_NAME = 'ips.log';
     const CACHE_FILE_SEPARATOR = ';;';
     const CACHE_FILE_NEWLINE = '\n';
 
@@ -20,8 +20,11 @@ describe('opts-default', () => {
         emoji: '🇺🇸',
         country: 'United States',
         countryA2: 'US',
+        region: 'District of Columbia',
         city: 'Washington',
+        org: 'APNIC and Cloudflare DNS Resolver project',
         isp: 'Cloudflare, Inc.',
+        ispDomain: 'cloudflare.com',
     };
 
     const outputKeys = [
@@ -29,8 +32,11 @@ describe('opts-default', () => {
         'emoji',
         'country',
         'countryA2',
+        'region',
         'city',
+        'org',
         'isp',
+        'ispDomain',
     ];
 
     removeCacheFolder(CACHE_FILE_DIR);
@@ -62,6 +68,10 @@ describe('opts-default', () => {
             it(`should have "${key}" in request response`, () => {
                 assert.ok(data[key]);
             });
+        });
+
+        it('should not have extra keys in request response', () => {
+            assert.deepEqual(Object.keys(data), outputKeys);
         });
     });
 });

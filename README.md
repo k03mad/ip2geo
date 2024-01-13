@@ -24,7 +24,7 @@ const {
 } = await ip2geo('1.1.1.1', {
     // defaults
     cacheDir: 'geoip',
-    cacheFileName: 'ip.log',
+    cacheFileName: 'ips.log',
     cacheFileSeparator: ';;',
     cacheFileNewline: '\n',
 });
