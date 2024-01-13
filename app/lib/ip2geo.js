@@ -1,0 +1,164 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+import {request} from '@k03mad/request';
+import _debug from 'debug';
+
+const debug = _debug('mad:geoip');
+
+/**
+ * @typedef {object} GeoIpOutput
+ * @property {string} [ip]
+ * @property {string} [emoji]
+ * @property {string} [country]
+ * @property {string} [countryA2]
+ * @property {string} [city]
+ * @property {string} [isp]
+ */
+
+const API = 'https://ipwho.is/';
+
+const CACHE_FILE_DIR = 'geoip';
+const CACHE_FILE_NAME = 'ip.log';
+const CACHE_FILE_SEPARATOR = ';;';
+const CACHE_FILE_NEWLINE = '\n';
+
+const cacheMap = new Map();
+
+const outputKeys = [
+    'ip',
+    'emoji',
+    'country',
+    'countryA2',
+    'city',
+    'isp',
+];
+
+/**
+ * @param {Array<string>} dataArr
+ * @returns {GeoIpOutput}
+ */
+const collectOutputData = dataArr => {
+    const outputData = {};
+
+    outputKeys.forEach((key, i) => {
+        outputData[key] = dataArr[i];
+    });
+
+    return outputData;
+};
+
+/**
+ * @param {string} ip
+ * @param {string} cacheDir
+ * @param {string} cacheFileName
+ * @returns {string}
+ */
+const getCacheFileFullPath = (ip, cacheDir, cacheFileName) => {
+    const [firstOctet] = ip.split('.');
+    return path.join(cacheDir, `${firstOctet}_${cacheFileName}`);
+};
+
+/**
+ * @param {string} ip
+ * @param {string} cacheDir
+ * @param {string} cacheFileName
+ * @returns {Promise<string>}
+ */
+const readFromFsCache = async (ip, cacheDir, cacheFileName) => {
+    try {
+        await fs.mkdir(cacheDir, {recursive: true});
+        return await fs.readFile(getCacheFileFullPath(ip, cacheDir, cacheFileName), {encoding: 'utf8'});
+    } catch (err) {
+        if (err.code === 'ENOENT') {
+            await fs.appendFile(getCacheFileFullPath(ip, cacheDir, cacheFileName), '');
+        } else {
+            throw err;
+        }
+    }
+};
+
+/**
+ * @param {string} ip
+ * @param {Array[string]} data
+ * @param {string} cacheDir
+ * @param {string} cacheFileName
+ * @param {string} cacheFileSeparator
+ * @param {string} cacheFileNewline
+ * @returns {Promise<void>}
+ */
+const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline) => {
+    await fs.mkdir(cacheDir, {recursive: true});
+
+    await fs.appendFile(
+        getCacheFileFullPath(ip, cacheDir, cacheFileName),
+        data.join(cacheFileSeparator) + cacheFileNewline,
+    );
+};
+
+/**
+ * @param {string} [ip]
+ * @param {object} [opts]
+ * @param {string} [opts.cacheDir]
+ * @param {string} [opts.cacheFileName]
+ * @param {string} [opts.cacheFileSeparator]
+ * @param {string} [opts.cacheFileNewline]
+ * @returns {Promise<GeoIpOutput>}
+ */
+export default async (ip = '', {
+    cacheDir = CACHE_FILE_DIR,
+    cacheFileName = CACHE_FILE_NAME,
+    cacheFileSeparator = CACHE_FILE_SEPARATOR,
+    cacheFileNewline = CACHE_FILE_NEWLINE,
+} = {}) => {
+    if (ip) {
+        const ipData = cacheMap.get(ip);
+
+        if (ipData) {
+            debug('get from map cache: %o', ipData);
+            return ipData;
+        }
+
+        const fsCache = await readFromFsCache(ip, cacheDir, cacheFileName);
+
+        if (fsCache) {
+            const data = fsCache.split(cacheFileNewline);
+
+            for (const elem of data) {
+                const fileData = elem.split(cacheFileSeparator);
+
+                if (ip === fileData[0]) {
+                    const outputData = collectOutputData(fileData);
+                    debug('get from fs cache: %o', outputData);
+
+                    cacheMap.set(ip, outputData);
+                    return outputData;
+                }
+            }
+        }
+    }
+
+    const {body} = await request(API + ip);
+
+    const usedData = [
+        body.ip,
+        body?.flag?.emoji,
+        body?.country,
+        body?.country_code,
+        body?.city,
+        body?.connection?.isp,
+    ];
+
+    const outputData = collectOutputData(usedData);
+
+    cacheMap.set(body.ip, outputData);
+    debug('set to map cache: %o', outputData);
+
+    await writeToFsCache(
+        body.ip, usedData,
+        cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline,
+    );
+
+    debug('set to fs cache: %o', outputData);
+    return outputData;
+};

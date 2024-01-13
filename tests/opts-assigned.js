@@ -1,0 +1,47 @@
+import assert from 'node:assert/strict';
+import {describe, it} from 'node:test';
+
+import {ip2geo} from '../app/index.js';
+
+import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
+
+describe('opts-assigned', () => {
+    const CACHE_FILE_DIR = 'geoip-cache-opts';
+    const CACHE_FILE_NAME = 'ips.md';
+    const CACHE_FILE_SEPARATOR = '-_-';
+    const CACHE_FILE_NEWLINE = '%%%';
+
+    const REQUEST_IP = '8.8.8.8';
+
+    const cacheFile = `${REQUEST_IP.split('.')[0]}_${CACHE_FILE_NAME}`;
+
+    const response = {
+        ip: REQUEST_IP,
+        emoji: '🇺🇸',
+        country: 'United States',
+        countryA2: 'US',
+        city: 'Mountain View',
+        isp: 'Google LLC',
+    };
+
+    removeCacheFolder(CACHE_FILE_DIR);
+
+    it(`should return correct response for IP: "${REQUEST_IP}"`, async () => {
+        const data = await ip2geo(REQUEST_IP, {
+            cacheDir: CACHE_FILE_DIR,
+            cacheFileName: CACHE_FILE_NAME,
+            cacheFileSeparator: CACHE_FILE_SEPARATOR,
+            cacheFileNewline: CACHE_FILE_NEWLINE,
+        });
+
+        assert.deepEqual(data, response);
+    });
+
+    checkCacheFile(
+        CACHE_FILE_DIR,
+        cacheFile,
+        CACHE_FILE_SEPARATOR,
+        CACHE_FILE_NEWLINE,
+        response,
+    );
+});
