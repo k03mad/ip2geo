@@ -3,17 +3,20 @@ import {describe, it} from 'node:test';
 
 import {ip2geo} from '../app/index.js';
 
+import {getCurrentFilename} from './helpers/path.js';
 import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
-describe('opts-assigned', () => {
-    const CACHE_FILE_DIR = 'geoip-cache-opts';
+const testName = getCurrentFilename(import.meta.url);
+
+describe(testName, () => {
+    const CACHE_FILE_DIR = testName;
     const CACHE_FILE_NAME = 'ips.md';
     const CACHE_FILE_SEPARATOR = '-_-';
     const CACHE_FILE_NEWLINE = '%%%';
 
     const REQUEST_IP = '8.8.8.8';
 
-    const cacheFile = `${REQUEST_IP.split('.')[0]}_${CACHE_FILE_NAME}`;
+    const cacheFile = `${REQUEST_IP.split(/\.|:/)[0]}_${CACHE_FILE_NAME}`;
 
     const response = {
         ip: REQUEST_IP,

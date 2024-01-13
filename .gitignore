@@ -2,6 +2,5 @@
 node_modules
 
 .eslintcache
-/geoip
-/geoip-cache-opts
-/geoip-subfolder
+.geoip*
+opts*

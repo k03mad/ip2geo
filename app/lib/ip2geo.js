@@ -21,7 +21,7 @@ const debug = _debug('mad:geoip');
 
 const API = 'https://ipwho.is/';
 
-const DEFAULT_CACHE_FILE_DIR = 'geoip';
+const DEFAULT_CACHE_FILE_DIR = '.geoip';
 const DEFAULT_CACHE_FILE_NAME = 'ips.log';
 const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 const DEFAULT_CACHE_FILE_NEWLINE = '\n';
@@ -61,7 +61,7 @@ const collectOutputData = dataArr => {
  * @returns {string}
  */
 const getCacheFileFullPath = (ip, cacheDir, cacheFileName) => {
-    const [firstOctet] = ip.split('.');
+    const [firstOctet] = ip.split(/\.|:/);
     return path.join(cacheDir, `${firstOctet}_${cacheFileName}`);
 };
 

@@ -8,7 +8,7 @@
 
 ```bash
 npm i @k03mad/ip2geo --save-exact
-echo "/geoip" >> .gitignore
+echo .geoip >> .gitignore
 ```
 
 ```js
@@ -23,7 +23,7 @@ const {
     isp,
 } = await ip2geo('1.1.1.1', {
     // defaults
-    cacheDir: 'geoip',
+    cacheDir: '.geoip',
     cacheFileName: 'ips.log',
     cacheFileSeparator: ';;',
     cacheFileNewline: '\n',

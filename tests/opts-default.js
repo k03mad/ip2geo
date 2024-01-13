@@ -6,14 +6,14 @@ import {ip2geo} from '../app/index.js';
 import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
 describe('opts-default', () => {
-    const CACHE_FILE_DIR = 'geoip';
+    const CACHE_FILE_DIR = '.geoip';
     const CACHE_FILE_NAME = 'ips.log';
     const CACHE_FILE_SEPARATOR = ';;';
     const CACHE_FILE_NEWLINE = '\n';
 
     const REQUEST_IP = '1.1.1.1';
 
-    const cacheFile = `${REQUEST_IP.split('.')[0]}_${CACHE_FILE_NAME}`;
+    const cacheFile = `${REQUEST_IP.split(/\.|:/)[0]}_${CACHE_FILE_NAME}`;
 
     const response = {
         ip: REQUEST_IP,
