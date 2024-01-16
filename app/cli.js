@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-import os from 'node:os';
-import path from 'node:path';
-
 import {log, logErrorExit} from '@k03mad/simple-log';
 
 import {codeText, errorText, nameText} from './helpers/colors.js';
@@ -33,9 +30,7 @@ if (args.includes(jsonParam)) {
 }
 
 await Promise.all(args.map(async arg => {
-    const output = await ip2geo(arg, {
-        cacheDir: path.join(os.tmpdir(), '.ip2geo'),
-    });
+    const output = await ip2geo(arg);
 
     if (json) {
         return log(JSON.stringify(output));

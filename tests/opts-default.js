@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import os from 'node:os';
+import path from 'node:path';
 
 import {describe, it} from 'mocha';
 
@@ -7,7 +9,7 @@ import {ip2geo} from '../app/index.js';
 import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
 describe('opts-default', () => {
-    const CACHE_FILE_DIR = '.geoip';
+    const CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
     const CACHE_FILE_NAME = 'ips.log';
     const CACHE_FILE_SEPARATOR = ';;';
     const CACHE_FILE_NEWLINE = '\n';

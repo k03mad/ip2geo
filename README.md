@@ -5,8 +5,6 @@
 
 ## Global
 
-Cache directory = `os.tmpDir() / .ip2geo`
-
 ```bash
 npm i @k03mad/ip2geo -g
 
@@ -30,8 +28,7 @@ ip2geo 1.1.1.1 --json
 ## API
 
 ```bash
-npm i @k03mad/ip2geo --save-exact
-echo .geoip >> .gitignore
+npm i @k03mad/ip2geo
 ```
 
 ```js
@@ -39,10 +36,7 @@ import {ip2geo} from '@k03mad/ip2geo';
 
 const info = await ip2geo('1.1.1.1', {
     // defaults
-
-    // current app root
-    cacheDir: '.geoip',
-    // will be prefixed with the first IP octet
+    cacheDir: path.join(os.tmpdir(), '.ip2geo'),
     cacheFileName: 'ips.log',
     cacheFileSeparator: ';;',
     cacheFileNewline: '\n',

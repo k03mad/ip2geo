@@ -10,4 +10,4 @@ export const getCurrentFilename = file => path.basename(file, '.js');
  * @param {string} file
  * @returns {string}
  */
-export const getTestFolder = file => path.join('.geoipCustom', file);
+export const getTestFolder = file => path.join('.geoip', file);

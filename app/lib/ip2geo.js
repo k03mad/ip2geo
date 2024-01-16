@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 
 import {request} from '@k03mad/request';
@@ -21,7 +22,7 @@ const debug = _debug('mad:geoip');
 
 const API = 'https://ipwho.is/';
 
-const DEFAULT_CACHE_FILE_DIR = '.geoip';
+const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
 const DEFAULT_CACHE_FILE_NAME = 'ips.log';
 const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 const DEFAULT_CACHE_FILE_NEWLINE = '\n';
