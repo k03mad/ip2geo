@@ -3,8 +3,9 @@
 import os from 'node:os';
 import path from 'node:path';
 
+import {log, logErrorExit} from '@k03mad/simple-log';
+
 import {codeText, errorText, nameText} from './helpers/colors.js';
-import {log, throwError} from './helpers/logging.js';
 
 import {ip2geo} from './index.js';
 
@@ -16,7 +17,7 @@ if (args.length === 0) {
     const prefix = codeText('$');
     const name = nameText('ip2geo');
 
-    throwError([
+    logErrorExit([
         errorText('IP(s) should be passed as args'),
         '',
         `${prefix} ${name} 1.1.1.1`,
