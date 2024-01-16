@@ -1,10 +1,11 @@
 # GeoIP lookup
 
 — Using [ipwhois.io](https://ipwhois.io/documentation) \
-— Runtime cache \
-— Filesystem infinity cache
+— Runtime + filesystem caching
 
 ## Global
+
+Cache directory = `os.tmpDir() / .ip2geo`
 
 ```bash
 npm i @k03mad/ip2geo -g
@@ -38,7 +39,10 @@ import {ip2geo} from '@k03mad/ip2geo';
 
 const info = await ip2geo('1.1.1.1', {
     // defaults
+
+    // current app root
     cacheDir: '.geoip',
+    // will be prefixed with the first IP octet
     cacheFileName: 'ips.log',
     cacheFileSeparator: ';;',
     cacheFileNewline: '\n',
