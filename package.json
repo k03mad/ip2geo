@@ -5,6 +5,9 @@
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
   ],
+  "bin": {
+    "ip2geo": "app/cli.js"
+  },
   "main": "app/index.js",
   "repository": {
     "type": "git",
@@ -17,6 +20,7 @@
   },
   "dependencies": {
     "@k03mad/request": "5.4.1",
+    "chalk": "5.3.0",
     "debug": "4.3.4"
   },
   "devDependencies": {
