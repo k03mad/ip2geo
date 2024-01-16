@@ -5,15 +5,17 @@ import {describe, it} from 'mocha';
 
 import {ip2geo} from '../app/index.js';
 
-import {getCurrentFilename} from './helpers/path.js';
+import {getCurrentFilename, getTestFolder} from './helpers/path.js';
 import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
 const testName = getCurrentFilename(import.meta.url);
 const SUBFOLDERS = 5;
 
 describe(testName, () => {
-    const CACHE_FILE_DIR = path.join(
-        ...Array.from({length: SUBFOLDERS}, () => testName),
+    const CACHE_FILE_DIR = getTestFolder(
+        path.join(
+            ...Array.from({length: SUBFOLDERS}, () => testName),
+        ),
     );
 
     const CACHE_FILE_NAME = 'ips.log';
