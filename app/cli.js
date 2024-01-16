@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import os from 'node:os';
+import path from 'node:path';
+
 import {codeText, errorText, nameText} from './helpers/colors.js';
 import {log, throwError} from './helpers/logging.js';
 
@@ -29,7 +32,9 @@ if (args.includes(jsonParam)) {
 }
 
 await Promise.all(args.map(async arg => {
-    const output = await ip2geo(arg);
+    const output = await ip2geo(arg, {
+        cacheDir: path.join(os.tmpdir(), '.ip2geo'),
+    });
 
     if (json) {
         return log(JSON.stringify(output));

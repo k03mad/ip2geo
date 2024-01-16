@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import {describe, it} from 'node:test';
+
+import {describe, it} from 'mocha';
 
 import {ip2geo} from '../app/index.js';
 
@@ -30,7 +31,7 @@ describe(testName, () => {
         ispDomain: 'google.com',
     };
 
-    removeCacheFolder(CACHE_FILE_DIR);
+    it('should remove fs cache dir if exist', () => removeCacheFolder(CACHE_FILE_DIR));
 
     it(`should return correct response for IP: "${REQUEST_IP}"`, async () => {
         const data = await ip2geo(REQUEST_IP, {
@@ -43,11 +44,11 @@ describe(testName, () => {
         assert.deepEqual(data, response);
     });
 
-    checkCacheFile(
+    it('should have cache file', () => checkCacheFile(
         CACHE_FILE_DIR,
         cacheFile,
         CACHE_FILE_SEPARATOR,
         CACHE_FILE_NEWLINE,
         response,
-    );
+    ));
 });

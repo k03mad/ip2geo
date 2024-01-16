@@ -1,21 +1,18 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {it} from 'node:test';
 
 /**
  * @param {string} cacheDir
  */
-export const removeCacheFolder = cacheDir => {
-    it('should remove fs cache dir if exist', async () => {
-        try {
-            await fs.rm(cacheDir, {recursive: true, force: true});
-        } catch (err) {
-            if (err.code !== 'ENOENT') {
-                throw err;
-            }
+export const removeCacheFolder = async cacheDir => {
+    try {
+        await fs.rm(cacheDir, {recursive: true, force: true});
+    } catch (err) {
+        if (err.code !== 'ENOENT') {
+            throw err;
         }
-    });
+    }
 };
 
 /**
@@ -25,10 +22,8 @@ export const removeCacheFolder = cacheDir => {
  * @param {string} cacheFileNewline
  * @param {object} response
  */
-export const checkCacheFile = (cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline, response) => {
-    it('should have cache file', async () => {
-        const data = await fs.readFile(path.join(cacheDir, cacheFileName), {encoding: 'utf8'});
+export const checkCacheFile = async (cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline, response) => {
+    const data = await fs.readFile(path.join(cacheDir, cacheFileName), {encoding: 'utf8'});
 
-        assert.equal(data, Object.values(response).join(cacheFileSeparator) + cacheFileNewline);
-    });
+    assert.equal(data, Object.values(response).join(cacheFileSeparator) + cacheFileNewline);
 };

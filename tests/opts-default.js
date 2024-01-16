@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import {describe, it} from 'node:test';
+
+import {describe, it} from 'mocha';
 
 import {ip2geo} from '../app/index.js';
 
@@ -48,13 +49,13 @@ describe('opts-default', () => {
             assert.deepEqual(data, response);
         });
 
-        checkCacheFile(
+        it('should have cache file', () => checkCacheFile(
             CACHE_FILE_DIR,
             cacheFile,
             CACHE_FILE_SEPARATOR,
             CACHE_FILE_NEWLINE,
             response,
-        );
+        ));
     });
 
     describe('without ip arg', () => {

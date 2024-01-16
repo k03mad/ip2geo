@@ -26,12 +26,13 @@
   "devDependencies": {
     "@k03mad/eslint-config": "19.2.0",
     "eslint": "8.56.0",
-    "husky": "8.0.3"
+    "husky": "8.0.3",
+    "mocha": "10.2.0"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint ./ --cache",
-    "test": "node --test tests/*",
+    "test": "mocha tests",
     "clean": "npm run clean:modules && npm run clean:eslint:cache",
     "clean:modules": "rm -rf ./node_modules || true",
     "clean:eslint:cache": "rm -rf .eslintcache || true",
