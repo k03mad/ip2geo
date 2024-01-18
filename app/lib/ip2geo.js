@@ -147,6 +147,10 @@ export default async (ip = '', {
 
     const {body} = await request(API + ip);
 
+    if (!body?.ip) {
+        throw new Error(`API error:\n${body}`);
+    }
+
     const usedData = [
         body.ip,
         body?.flag?.emoji,
