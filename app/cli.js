@@ -7,6 +7,7 @@ import {codeText, nameText} from './helpers/colors.js';
 import {ip2geo} from './index.js';
 
 const args = process.argv.slice(2);
+const argsIps = args.filter(arg => !arg.startsWith('-'));
 
 if (args.includes('-h') || args.includes('--help')) {
     const prefix = codeText('$');
@@ -26,9 +27,9 @@ if (args.includes('-h') || args.includes('--help')) {
     ]);
 }
 
-const output = await Promise.all(args
-    .filter(arg => !arg.startsWith('-'))
-    .map(arg => Promise.all(arg.split(',').map(elem => ip2geo(elem)))));
+const output = argsIps.length === 0
+    ? [await ip2geo()]
+    : await Promise.all(argsIps.map(arg => Promise.all(arg.split(',').map(ip => ip2geo(ip)))));
 
 const flatten = output.flat();
 

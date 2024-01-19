@@ -9,6 +9,9 @@
 npm i @k03mad/ip2geo -g
 ip2geo --help
 
+ip2geo
+# your IP info
+
 ip2geo 1.1.1.1
 # {
 #   ip: '1.1.1.1',
@@ -42,7 +45,7 @@ const info = await ip2geo('1.1.1.1', {
     cacheFileSeparator: ';;',
     cacheFileNewline: '\n',
     cacheMap: new Map(),
-    rps: 5, // useful in Promise.all with big IPs array
+    rps: 5, // useful in Promise.all with IPs array
 });
 
 // info {
