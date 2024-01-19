@@ -11,13 +11,10 @@ import {removeCacheFolder} from './shared/fs.js';
 const testName = getCurrentFilename(import.meta.url);
 
 describe(testName, () => {
-    const response = {ip: '10.10.10.10'};
-
-    Object.keys(REQUEST_IPV4).forEach(elem => {
-        if (elem !== 'ip') {
-            response[elem] = undefined;
-        }
-    });
+    const responses = [
+        {ip: '10.10.10.10'},
+        {ip: 'test'},
+    ];
 
     const opts = {
         cacheDir: getTestFolder(testName),
@@ -26,8 +23,16 @@ describe(testName, () => {
 
     it('should remove fs cache dir if exist', () => removeCacheFolder(opts.cacheDir));
 
-    it(`should return empty response for IP: "${response.ip}"`, async () => {
-        const data = await ip2geo(response.ip, opts);
-        assert.deepEqual(data, response);
+    responses.forEach(response => {
+        Object.keys(REQUEST_IPV4).forEach(elem => {
+            if (elem !== 'ip') {
+                response[elem] = undefined;
+            }
+        });
+
+        it(`should return empty response for IP: "${response.ip}"`, async () => {
+            const data = await ip2geo(response.ip, opts);
+            assert.deepEqual(data, response);
+        });
     });
 });
