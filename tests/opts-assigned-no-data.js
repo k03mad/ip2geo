@@ -4,13 +4,21 @@ import {describe, it} from 'mocha';
 
 import {ip2geo} from '../app/index.js';
 
-import {REQUEST_IPV6} from './helpers/consts.js';
+import {REQUEST_IPV4} from './helpers/consts.js';
 import {getCurrentFilename, getTestFolder} from './helpers/path.js';
-import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
+import {removeCacheFolder} from './shared/fs.js';
 
 const testName = getCurrentFilename(import.meta.url);
 
 describe(testName, () => {
+    const response = {ip: '10.10.10.10'};
+
+    Object.keys(REQUEST_IPV4).forEach(elem => {
+        if (elem !== 'ip') {
+            response[elem] = undefined;
+        }
+    });
+
     const opts = {
         cacheDir: getTestFolder(testName),
         cacheMap: new Map(),
@@ -18,14 +26,8 @@ describe(testName, () => {
 
     it('should remove fs cache dir if exist', () => removeCacheFolder(opts.cacheDir));
 
-    it(`should return correct response for IP: "${REQUEST_IPV6.ip}"`, async () => {
-        const data = await ip2geo(REQUEST_IPV6.ip, opts);
-
-        assert.deepEqual(data, REQUEST_IPV6);
+    it(`should return empty response for IP: "${response.ip}"`, async () => {
+        const data = await ip2geo(response.ip, opts);
+        assert.deepEqual(data, response);
     });
-
-    it('should have cache file', () => checkCacheFile({
-        ...opts,
-        response: REQUEST_IPV6,
-    }));
 });

@@ -26,8 +26,9 @@ const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
 const DEFAULT_CACHE_FILE_NAME = 'ips.log';
 const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 const DEFAULT_CACHE_FILE_NEWLINE = '\n';
+const DEFAULT_RPS = 5;
 
-const cacheMap = new Map();
+export const cacheStorage = new Map();
 
 const outputKeys = [
     'ip',
@@ -110,13 +111,17 @@ const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSepara
  * @param {string} [opts.cacheFileName]
  * @param {string} [opts.cacheFileSeparator]
  * @param {string} [opts.cacheFileNewline]
+ * @param {Map} [opts.cacheMap]
+ * @param {number} opts.rps
  * @returns {Promise<GeoIpOutput>}
  */
-export default async (ip = '', {
+export const ip2geo = async (ip = '', {
     cacheDir = DEFAULT_CACHE_FILE_DIR,
     cacheFileName = DEFAULT_CACHE_FILE_NAME,
     cacheFileSeparator = DEFAULT_CACHE_FILE_SEPARATOR,
     cacheFileNewline = DEFAULT_CACHE_FILE_NEWLINE,
+    cacheMap = cacheStorage,
+    rps = DEFAULT_RPS,
 } = {}) => {
     if (ip) {
         const ipData = cacheMap.get(ip);
@@ -145,7 +150,7 @@ export default async (ip = '', {
         }
     }
 
-    const {body} = await request(API + ip);
+    const {body} = await request(API + ip, {}, {rps});
 
     if (!body?.ip) {
         throw new Error(`API error:\n${body}`);

@@ -1,40 +1,39 @@
 #!/usr/bin/env node
 
-import {log, logErrorExit} from '@k03mad/simple-log';
+import {log} from '@k03mad/simple-log';
 
-import {codeText, errorText, nameText} from './helpers/colors.js';
+import {codeText, nameText} from './helpers/colors.js';
 
 import {ip2geo} from './index.js';
 
-const jsonParam = '--json';
+const args = process.argv.slice(2);
 
-let args = process.argv.slice(2);
-
-if (args.length === 0) {
+if (args.includes('-h') || args.includes('--help')) {
     const prefix = codeText('$');
     const name = nameText('ip2geo');
+    const json = codeText('// json output for parse');
+    const multi = codeText('// multi IPs');
 
-    logErrorExit([
-        errorText('IP(s) should be passed as args'),
+    log([
         '',
+        `${prefix} ${name}`,
         `${prefix} ${name} 1.1.1.1`,
-        `${prefix} ${name} 1.1.1.1 8.8.8.8`,
+        `${prefix} ${name} 1.1.1.1 -j       ${json}`,
+        `${prefix} ${name} 1.1.1.1 --json   ${json}`,
+        `${prefix} ${name} 1.1.1.1 8.8.8.8  ${multi}`,
+        `${prefix} ${name} 1.1.1.1,8.8.8.8  ${multi}`,
+        '',
     ]);
 }
 
-let json;
+const output = await Promise.all(args
+    .filter(arg => !arg.startsWith('-'))
+    .map(arg => Promise.all(arg.split(',').map(elem => ip2geo(elem)))));
 
-if (args.includes(jsonParam)) {
-    json = true;
-    args = args.filter(elem => elem !== jsonParam);
+const flatten = output.flat();
+
+if (args.includes('--json') || args.includes('-j')) {
+    log(JSON.stringify(flatten.length > 1 ? flatten : flatten[0]));
+} else {
+    log(flatten);
 }
-
-await Promise.all(args.map(async arg => {
-    const output = await ip2geo(arg);
-
-    if (json) {
-        return log(JSON.stringify(output));
-    }
-
-    log(output);
-}));

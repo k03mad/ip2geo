@@ -1,63 +1,32 @@
 import assert from 'node:assert/strict';
-import os from 'node:os';
-import path from 'node:path';
 
 import {describe, it} from 'mocha';
 
-import {ip2geo} from '../app/index.js';
+import {cacheStorage, ip2geo} from '../app/index.js';
 
+import {REQUEST_IPV4} from './helpers/consts.js';
+import {getCurrentFilename} from './helpers/path.js';
 import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
-describe('opts-default', () => {
-    const CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
-    const CACHE_FILE_NAME = 'ips.log';
-    const CACHE_FILE_SEPARATOR = ';;';
-    const CACHE_FILE_NEWLINE = '\n';
+const testName = getCurrentFilename(import.meta.url);
 
-    const REQUEST_IP = '1.1.1.1';
-
-    const cacheFile = `${REQUEST_IP.split(/\.|:/)[0]}_${CACHE_FILE_NAME}`;
-
-    const response = {
-        ip: REQUEST_IP,
-        emoji: '🇺🇸',
-        country: 'United States',
-        countryA2: 'US',
-        region: 'District of Columbia',
-        city: 'Washington',
-        org: 'APNIC and Cloudflare DNS Resolver project',
-        isp: 'Cloudflare, Inc.',
-        ispDomain: 'cloudflare.com',
-    };
-
-    const outputKeys = [
-        'ip',
-        'emoji',
-        'country',
-        'countryA2',
-        'region',
-        'city',
-        'org',
-        'isp',
-        'ispDomain',
-    ];
-
-    removeCacheFolder(CACHE_FILE_DIR);
+describe(testName, () => {
+    it('should remove fs cache dir if exist', () => removeCacheFolder());
 
     describe('with ip arg', () => {
-        it(`should return correct response for IP: "${REQUEST_IP}"`, async () => {
-            const data = await ip2geo(REQUEST_IP);
-
-            assert.deepEqual(data, response);
+        it(`should return correct response for IP: "${REQUEST_IPV4.ip}"`, async () => {
+            const data = await ip2geo(REQUEST_IPV4.ip);
+            assert.deepEqual(data, REQUEST_IPV4);
         });
 
-        it('should have cache file', () => checkCacheFile(
-            CACHE_FILE_DIR,
-            cacheFile,
-            CACHE_FILE_SEPARATOR,
-            CACHE_FILE_NEWLINE,
-            response,
-        ));
+        it('should have cache file', () => checkCacheFile({
+            response: REQUEST_IPV4,
+        }));
+
+        it('should have 1 correct cache entry', () => {
+            assert.equal(cacheStorage.size, 1);
+            assert.deepEqual(cacheStorage.get(REQUEST_IPV4.ip), REQUEST_IPV4);
+        });
     });
 
     describe('without ip arg', () => {
@@ -67,14 +36,19 @@ describe('opts-default', () => {
             data = await ip2geo();
         });
 
-        outputKeys.forEach(key => {
+        Object.keys(REQUEST_IPV4).forEach(key => {
             it(`should have "${key}" in request response`, () => {
                 assert.ok(data[key]);
             });
         });
 
         it('should not have extra keys in request response', () => {
-            assert.deepEqual(Object.keys(data), outputKeys);
+            assert.deepEqual(Object.keys(data), Object.keys(REQUEST_IPV4));
+        });
+
+        it('should have 2 cache entries', () => {
+            assert.equal(cacheStorage.size, 2);
+            assert.deepEqual(cacheStorage.get(REQUEST_IPV4.ip), REQUEST_IPV4);
         });
     });
 });

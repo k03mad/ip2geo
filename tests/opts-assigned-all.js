@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import path from 'node:path';
 
 import {describe, it} from 'mocha';
 
@@ -12,14 +11,11 @@ import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 const testName = getCurrentFilename(import.meta.url);
 
 describe(testName, () => {
-    const SUBFOLDERS = 5;
-
     const opts = {
-        cacheDir: getTestFolder(
-            path.join(
-                ...Array.from({length: SUBFOLDERS}, () => testName),
-            ),
-        ),
+        cacheDir: getTestFolder(testName),
+        cacheFileName: 'ips.md',
+        cacheFileSeparator: '-_-',
+        cacheFileNewline: '%%%',
         cacheMap: new Map(),
     };
 
