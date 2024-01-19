@@ -26,7 +26,7 @@ const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
 const DEFAULT_CACHE_FILE_NAME = 'ips.log';
 const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 const DEFAULT_CACHE_FILE_NEWLINE = '\n';
-const DEFAULT_RPS = 5;
+const DEFAULT_RPS = 3;
 
 export const cacheStorage = new Map();
 
