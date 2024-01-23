@@ -11,11 +11,9 @@ import {removeCacheFolder} from './shared/fs.js';
 const testName = getCurrentFilename(import.meta.url);
 
 describe(testName, () => {
-    const cacheMap = new Map();
-
     const opts = {
         cacheDir: getTestFolder(testName),
-        cacheMap,
+        cacheMap: new Map(),
     };
 
     it('should remove fs cache dir if exist', () => removeCacheFolder(opts.cacheDir));
@@ -26,8 +24,8 @@ describe(testName, () => {
     });
 
     it('should have 1 correct cache entry', () => {
-        assert.equal(cacheMap.size, 1);
-        assert.deepEqual(cacheMap.get(REQUEST_IPV4.ip), REQUEST_IPV4);
+        assert.equal(opts.cacheMap.size, 1);
+        assert.deepEqual(opts.cacheMap.get(REQUEST_IPV4.ip), REQUEST_IPV4);
     });
 
     it(`should return correct response for IP: "${REQUEST_IPV6.ip}"`, async () => {
@@ -36,8 +34,8 @@ describe(testName, () => {
     });
 
     it('should have 2 correct cache entries', () => {
-        assert.equal(cacheMap.size, 2);
-        assert.deepEqual(cacheMap.get(REQUEST_IPV4.ip), REQUEST_IPV4);
-        assert.deepEqual(cacheMap.get(REQUEST_IPV6.ip), REQUEST_IPV6);
+        assert.equal(opts.cacheMap.size, 2);
+        assert.deepEqual(opts.cacheMap.get(REQUEST_IPV4.ip), REQUEST_IPV4);
+        assert.deepEqual(opts.cacheMap.get(REQUEST_IPV6.ip), REQUEST_IPV6);
     });
 });

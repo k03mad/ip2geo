@@ -26,6 +26,7 @@ const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
 const DEFAULT_CACHE_FILE_NAME = 'ips.log';
 const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 const DEFAULT_CACHE_FILE_NEWLINE = '\n';
+const DEFAULT_CACHE_MAP_MAX_ENTRIES = 1000;
 const DEFAULT_RPS = 3;
 
 export const cacheStorage = new Map();
@@ -112,6 +113,7 @@ const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSepara
  * @param {string} [opts.cacheFileSeparator]
  * @param {string} [opts.cacheFileNewline]
  * @param {Map} [opts.cacheMap]
+ * @param {number} opts.cacheMapMaxEntries
  * @param {number} opts.rps
  * @returns {Promise<GeoIpOutput>}
  */
@@ -120,6 +122,7 @@ export const ip2geo = async (ip = '', {
     cacheFileName = DEFAULT_CACHE_FILE_NAME,
     cacheFileSeparator = DEFAULT_CACHE_FILE_SEPARATOR,
     cacheFileNewline = DEFAULT_CACHE_FILE_NEWLINE,
+    cacheMapMaxEntries = DEFAULT_CACHE_MAP_MAX_ENTRIES,
     cacheMap = cacheStorage,
     rps = DEFAULT_RPS,
 } = {}) => {
@@ -179,5 +182,19 @@ export const ip2geo = async (ip = '', {
     );
 
     debug('set to fs cache: %o', outputData);
+
+    if (cacheMap.size > cacheMapMaxEntries) {
+        debug('remove from map cache by limit: size %o, limit: %o', cacheMap.size, cacheMapMaxEntries);
+
+        for (const [key] of cacheMap) {
+            debug('remove from map cache by limit: key %o', key);
+            cacheMap.delete(key);
+
+            if (cacheMap.size <= cacheMapMaxEntries) {
+                break;
+            }
+        }
+    }
+
     return outputData;
 };
