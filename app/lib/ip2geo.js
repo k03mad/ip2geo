@@ -112,7 +112,7 @@ const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSepara
  * @param {string} [opts.cacheFileName]
  * @param {string} [opts.cacheFileSeparator]
  * @param {string} [opts.cacheFileNewline]
- * @param {Map|false} [opts.cacheMap]
+ * @param {Map} [opts.cacheMap]
  * @param {number} [opts.cacheMapMaxEntries]
  * @param {number} [opts.rps]
  * @returns {Promise<GeoIpOutput>}
