@@ -45,7 +45,7 @@ const info = await ip2geo('1.1.1.1', {
     cacheFileSeparator: ';;',
     cacheFileNewline: '\n',
     cacheMap: new Map(),
-    cacheMapMaxEntries: 1000, // store last N requests
+    cacheMapMaxEntries: Number.POSITIVE_INFINITY, // store last N requests, 0 — turns cache map off
     rps: 3, // API RPS, useful in Promise.all with IPs array
 });
 

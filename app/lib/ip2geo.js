@@ -26,7 +26,7 @@ const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
 const DEFAULT_CACHE_FILE_NAME = 'ips.log';
 const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 const DEFAULT_CACHE_FILE_NEWLINE = '\n';
-const DEFAULT_CACHE_MAP_MAX_ENTRIES = 1000;
+const DEFAULT_CACHE_MAP_MAX_ENTRIES = Number.POSITIVE_INFINITY;
 const DEFAULT_RPS = 3;
 
 export const cacheStorage = new Map();
@@ -112,9 +112,9 @@ const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSepara
  * @param {string} [opts.cacheFileName]
  * @param {string} [opts.cacheFileSeparator]
  * @param {string} [opts.cacheFileNewline]
- * @param {Map} [opts.cacheMap]
- * @param {number} opts.cacheMapMaxEntries
- * @param {number} opts.rps
+ * @param {Map|false} [opts.cacheMap]
+ * @param {number} [opts.cacheMapMaxEntries]
+ * @param {number} [opts.rps]
  * @returns {Promise<GeoIpOutput>}
  */
 export const ip2geo = async (ip = '', {
@@ -127,11 +127,13 @@ export const ip2geo = async (ip = '', {
     rps = DEFAULT_RPS,
 } = {}) => {
     if (ip) {
-        const ipData = cacheMap.get(ip);
+        if (cacheMapMaxEntries > 0) {
+            const ipData = cacheMap.get(ip);
 
-        if (ipData) {
-            debug('get from map cache: %o', ipData);
-            return ipData;
+            if (ipData) {
+                debug('get from map cache: %o', ipData);
+                return ipData;
+            }
         }
 
         const fsCache = await readFromFsCache(ip, cacheDir, cacheFileName);
@@ -146,7 +148,11 @@ export const ip2geo = async (ip = '', {
                     const outputData = collectOutputData(fileData);
                     debug('get from fs cache: %o', outputData);
 
-                    cacheMap.set(ip, outputData);
+                    if (cacheMapMaxEntries > 0) {
+                        cacheMap.set(ip, outputData);
+                        debug('set to map cache: %o', outputData);
+                    }
+
                     return outputData;
                 }
             }
@@ -173,8 +179,10 @@ export const ip2geo = async (ip = '', {
 
     const outputData = collectOutputData(usedData);
 
-    cacheMap.set(body.ip, outputData);
-    debug('set to map cache: %o', outputData);
+    if (cacheMapMaxEntries > 0) {
+        cacheMap.set(body.ip, outputData);
+        debug('set to map cache: %o', outputData);
+    }
 
     await writeToFsCache(
         body.ip, usedData,
