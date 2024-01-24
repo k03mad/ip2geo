@@ -4,7 +4,7 @@ import {describe, it} from 'mocha';
 
 import {cacheStorage, ip2geo} from '../app/index.js';
 
-import {REQUEST_IPV4} from './helpers/consts.js';
+import {REQUEST_IPV4_MAP_OFF_ONLY} from './helpers/consts.js';
 import {getCurrentFilename, getTestFolder} from './helpers/path.js';
 import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
@@ -18,13 +18,14 @@ describe(testName, () => {
 
     it('should remove fs cache dir if exist', () => removeCacheFolder(opts.cacheDir));
 
-    it(`should return correct response for IP: "${REQUEST_IPV4.ip}"`, async () => {
-        const data = await ip2geo(REQUEST_IPV4.ip, opts);
-        assert.deepEqual(data, REQUEST_IPV4);
+    it(`should return correct response for IP: "${REQUEST_IPV4_MAP_OFF_ONLY.ip}"`, async () => {
+        const data = await ip2geo(REQUEST_IPV4_MAP_OFF_ONLY.ip, opts);
+        assert.deepEqual(data, REQUEST_IPV4_MAP_OFF_ONLY);
     });
 
     it('should have cache file', () => checkCacheFile({
-        response: REQUEST_IPV4,
+        ...opts,
+        response: REQUEST_IPV4_MAP_OFF_ONLY,
     }));
 
     it('should not have cache entries', () => {

@@ -20,6 +20,18 @@ export const REQUEST_IPV4 = {
     ispDomain: 'google.com',
 };
 
+export const REQUEST_IPV4_MAP_OFF_ONLY = {
+    ip: '1.1.1.1',
+    emoji: '🇺🇸',
+    country: 'United States',
+    countryA2: 'US',
+    region: 'District of Columbia',
+    city: 'Washington',
+    org: 'APNIC and Cloudflare DNS Resolver project',
+    isp: 'Cloudflare, Inc.',
+    ispDomain: 'cloudflare.com',
+};
+
 export const REQUEST_IPV6 = {
     ip: '2a00:dd80:40:100::',
     emoji: '🇳🇱',
