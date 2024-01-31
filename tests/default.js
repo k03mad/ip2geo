@@ -15,7 +15,7 @@ describe(testName, () => {
 
     describe('with ip arg', () => {
         it(`should return correct response for IP: "${REQUEST_IPV4.ip}"`, async () => {
-            const data = await ip2geo(REQUEST_IPV4.ip);
+            const data = await ip2geo({ip: REQUEST_IPV4.ip});
             assert.deepEqual(data, REQUEST_IPV4);
         });
 

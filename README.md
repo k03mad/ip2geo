@@ -15,18 +15,22 @@ ip2geo
 ip2geo 1.1.1.1
 # {
 #   ip: '1.1.1.1',
-#   emoji: '🇺🇸',
+#   continent: 'North America',
+#   continentCode: 'NA',
 #   country: 'United States',
-#   countryA2: 'US',
+#   countryCode: 'US',
+#   countryEmoji: '🇺🇸',
 #   region: 'District of Columbia',
+#   regionCode: 'DC',
 #   city: 'Washington',
-#   org: 'APNIC and Cloudflare DNS Resolver project',
-#   isp: 'Cloudflare, Inc.',
-#   ispDomain: 'cloudflare.com'
+#   connectionAsn: 13335,
+#   connectionOrg: 'APNIC and Cloudflare DNS Resolver project',
+#   connectionIsp: 'Cloudflare, Inc.',
+#   connectionDomain: 'cloudflare.com'
 # }
 
 ip2geo 1.1.1.1 8.8.8.8 --json
-# [{"ip":"1.1.1.1","emoji":"🇺🇸","country":"United States","countryA2":"US","region":"District of Columbia","city":"Washington","org":"APNIC and Cloudflare DNS Resolver project","isp":"Cloudflare, Inc.","ispDomain":"cloudflare.com"},{"ip":"8.8.8.8","emoji":"🇺🇸","country":"United States","countryA2":"US","region":"California","city":"Mountain View","org":"Google LLC","isp":"Google LLC","ispDomain":"google.com"}]
+# [{"ip":"1.1.1.1","continent":"North America","continentCode":"NA","country":"United States","countryCode":"US","countryEmoji":"🇺🇸","region":"District of Columbia","regionCode":"DC","city":"Washington","connectionAsn":13335,"connectionOrg":"APNIC and Cloudflare DNS Resolver project","connectionIsp":"Cloudflare, Inc.","connectionDomain":"cloudflare.com"},{"ip":"8.8.8.8","continent":"North America","continentCode":"NA","country":"United States","countryCode":"US","countryEmoji":"🇺🇸","region":"California","regionCode":"CA","city":"Mountain View","connectionAsn":15169,"connectionOrg":"Google LLC","connectionIsp":"Google LLC","connectionDomain":"google.com"}]
 ```
 
 ## API
@@ -38,7 +42,8 @@ npm i @k03mad/ip2geo
 ```js
 import {ip2geo} from '@k03mad/ip2geo';
 
-const info = await ip2geo('1.1.1.1', {
+const info = await ip2geo({
+    ip: '1.1.1.1', // make key falsy to use current external IP
     // defaults
     cacheDir: path.join(os.tmpdir(), '.ip2geo'),
     cacheFileName: 'ips.log',
@@ -51,13 +56,17 @@ const info = await ip2geo('1.1.1.1', {
 
 // info {
 //   ip: '1.1.1.1',
-//   emoji: '🇺🇸',
+//   continent: 'North America',
+//   continentCode: 'NA',
 //   country: 'United States',
-//   countryA2: 'US',
+//   countryCode: 'US',
+//   countryEmoji: '🇺🇸',
 //   region: 'District of Columbia',
+//   regionCode: 'DC',
 //   city: 'Washington',
-//   org: 'APNIC and Cloudflare DNS Resolver project',
-//   isp: 'Cloudflare, Inc.',
-//   ispDomain: 'cloudflare.com'
+//   connectionAsn: 13335,
+//   connectionOrg: 'APNIC and Cloudflare DNS Resolver project',
+//   connectionIsp: 'Cloudflare, Inc.',
+//   connectionDomain: 'cloudflare.com'
 // }
 ```

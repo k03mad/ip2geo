@@ -30,7 +30,7 @@ describe(testName, () => {
 
     firstReqIps.forEach(ip => {
         it(`should request geo for IP: "${ip}"`, async () => {
-            await ip2geo(ip, opts);
+            await ip2geo({ip, ...opts});
         });
     });
 
@@ -41,7 +41,7 @@ describe(testName, () => {
 
     secondReqIps.forEach(ip => {
         it(`should request geo for IP: "${ip}"`, async () => {
-            await ip2geo(ip, opts);
+            await ip2geo({ip, ...opts});
         });
     });
 

@@ -1,45 +1,47 @@
-import os from 'node:os';
-import path from 'node:path';
-
-export const DEFAULT_OPTS = {
-    cacheDir: path.join(os.tmpdir(), '.ip2geo'),
-    cacheFileName: 'ips.log',
-    cacheFileSeparator: ';;',
-    cacheFileNewline: '\n',
-};
-
 export const REQUEST_IPV4 = {
     ip: '8.8.8.8',
-    emoji: '🇺🇸',
+    continent: 'North America',
+    continentCode: 'NA',
     country: 'United States',
-    countryA2: 'US',
+    countryCode: 'US',
+    countryEmoji: '🇺🇸',
     region: 'California',
+    regionCode: 'CA',
     city: 'Mountain View',
-    org: 'Google LLC',
-    isp: 'Google LLC',
-    ispDomain: 'google.com',
+    connectionAsn: 15_169,
+    connectionOrg: 'Google LLC',
+    connectionIsp: 'Google LLC',
+    connectionDomain: 'google.com',
 };
 
 export const REQUEST_IPV4_MAP_OFF_ONLY = {
     ip: '1.1.1.1',
-    emoji: '🇺🇸',
+    continent: 'North America',
+    continentCode: 'NA',
     country: 'United States',
-    countryA2: 'US',
+    countryCode: 'US',
+    countryEmoji: '🇺🇸',
     region: 'District of Columbia',
+    regionCode: 'DC',
     city: 'Washington',
-    org: 'APNIC and Cloudflare DNS Resolver project',
-    isp: 'Cloudflare, Inc.',
-    ispDomain: 'cloudflare.com',
+    connectionAsn: 13_335,
+    connectionOrg: 'APNIC and Cloudflare DNS Resolver project',
+    connectionIsp: 'Cloudflare, Inc.',
+    connectionDomain: 'cloudflare.com',
 };
 
 export const REQUEST_IPV6 = {
     ip: '2a00:dd80:40:100::',
-    emoji: '🇳🇱',
+    continent: 'Europe',
+    continentCode: 'EU',
     country: 'Netherlands',
-    countryA2: 'NL',
+    countryCode: 'NL',
+    countryEmoji: '🇳🇱',
     region: 'North Holland',
+    regionCode: 'NH',
     city: 'Amsterdam',
-    org: '',
-    isp: 'NetActuate Inc',
-    ispDomain: '',
+    connectionAsn: 0,
+    connectionOrg: '',
+    connectionIsp: 'NetActuate Inc',
+    connectionDomain: '',
 };

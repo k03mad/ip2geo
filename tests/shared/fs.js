@@ -2,12 +2,17 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import {DEFAULT_OPTS} from '../helpers/consts.js';
+import {
+    DEFAULT_CACHE_FILE_DIR,
+    DEFAULT_CACHE_FILE_NAME,
+    DEFAULT_CACHE_FILE_NEWLINE,
+    DEFAULT_CACHE_FILE_SEPARATOR,
+} from '../../app/index.js';
 
 /**
  * @param {string} cacheDir
  */
-export const removeCacheFolder = async (cacheDir = DEFAULT_OPTS.cacheDir) => {
+export const removeCacheFolder = async (cacheDir = DEFAULT_CACHE_FILE_DIR) => {
     try {
         await fs.rm(cacheDir, {recursive: true, force: true});
     } catch (err) {
@@ -26,10 +31,10 @@ export const removeCacheFolder = async (cacheDir = DEFAULT_OPTS.cacheDir) => {
  * @param {object} opts.response
  */
 export const checkCacheFile = async ({
-    cacheDir = DEFAULT_OPTS.cacheDir,
-    cacheFileName = DEFAULT_OPTS.cacheFileName,
-    cacheFileSeparator = DEFAULT_OPTS.cacheFileSeparator,
-    cacheFileNewline = DEFAULT_OPTS.cacheFileNewline,
+    cacheDir = DEFAULT_CACHE_FILE_DIR,
+    cacheFileName = DEFAULT_CACHE_FILE_NAME,
+    cacheFileSeparator = DEFAULT_CACHE_FILE_SEPARATOR,
+    cacheFileNewline = DEFAULT_CACHE_FILE_NEWLINE,
     response,
 }) => {
     const cacheFile = `${response.ip.split(/\.|:/)[0]}_${cacheFileName}`;

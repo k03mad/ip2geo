@@ -1,14 +1,44 @@
-import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 
 import {request} from '@k03mad/request';
-import _debug from 'debug';
+import {logErrorExit} from '@k03mad/simple-log';
 
-const debug = _debug('mad:geoip');
+import {
+    collectOutputData,
+    readFromFsCache,
+    readFromMapCache,
+    removeFromMapCacheIfLimit,
+    writeToFsCache,
+    writeToMapCache,
+} from '../helpers/cache.js';
+
+const API = 'https://ipwho.is/';
+
+export const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo-cache');
+export const DEFAULT_CACHE_FILE_NAME = 'ip.log';
+export const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
+export const DEFAULT_CACHE_FILE_NEWLINE = '\n';
+export const DEFAULT_CACHE_MAP_MAX_ENTRIES = Number.POSITIVE_INFINITY;
+export const DEFAULT_RPS = 3;
+
+export const cacheStorage = new Map();
 
 /**
- * @typedef {object} GeoIpOutput
+ * @typedef {object} ReqInput
+ * @property {object} [opts]
+ * @property {object} [opts.ip]
+ * @property {string} [opts.cacheDir]
+ * @property {string} [opts.cacheFileName]
+ * @property {string} [opts.cacheFileSeparator]
+ * @property {string} [opts.cacheFileNewline]
+ * @property {Map} [opts.cacheMap]
+ * @property {number} [opts.cacheMapMaxEntries]
+ * @property {number} [opts.rps]
+ */
+
+/**
+ * @typedef {object} ReqOutput
  * @property {string} [ip]
  * @property {string} [emoji]
  * @property {string} [country]
@@ -20,104 +50,12 @@ const debug = _debug('mad:geoip');
  * @property {string} [ispDomain]
  */
 
-const API = 'https://ipwho.is/';
-
-const DEFAULT_CACHE_FILE_DIR = path.join(os.tmpdir(), '.ip2geo');
-const DEFAULT_CACHE_FILE_NAME = 'ips.log';
-const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
-const DEFAULT_CACHE_FILE_NEWLINE = '\n';
-const DEFAULT_CACHE_MAP_MAX_ENTRIES = Number.POSITIVE_INFINITY;
-const DEFAULT_RPS = 3;
-
-export const cacheStorage = new Map();
-
-const outputKeys = [
-    'ip',
-    'emoji',
-    'country',
-    'countryA2',
-    'region',
-    'city',
-    'org',
-    'isp',
-    'ispDomain',
-];
-
 /**
- * @param {Array<string>} dataArr
- * @returns {GeoIpOutput}
+ * @param {ReqInput} opts
+ * @returns {Promise<ReqOutput>}
  */
-const collectOutputData = dataArr => {
-    const outputData = {};
-
-    outputKeys.forEach((key, i) => {
-        outputData[key] = dataArr[i];
-    });
-
-    return outputData;
-};
-
-/**
- * @param {string} ip
- * @param {string} cacheDir
- * @param {string} cacheFileName
- * @returns {string}
- */
-const getCacheFileFullPath = (ip, cacheDir, cacheFileName) => {
-    const [firstOctet] = ip.split(/\.|:/);
-    return path.join(cacheDir, `${firstOctet}_${cacheFileName}`);
-};
-
-/**
- * @param {string} ip
- * @param {string} cacheDir
- * @param {string} cacheFileName
- * @returns {Promise<string>}
- */
-const readFromFsCache = async (ip, cacheDir, cacheFileName) => {
-    try {
-        await fs.mkdir(cacheDir, {recursive: true});
-        return await fs.readFile(getCacheFileFullPath(ip, cacheDir, cacheFileName), {encoding: 'utf8'});
-    } catch (err) {
-        if (err.code === 'ENOENT') {
-            await fs.appendFile(getCacheFileFullPath(ip, cacheDir, cacheFileName), '');
-        } else {
-            throw err;
-        }
-    }
-};
-
-/**
- * @param {string} ip
- * @param {Array[string]} data
- * @param {string} cacheDir
- * @param {string} cacheFileName
- * @param {string} cacheFileSeparator
- * @param {string} cacheFileNewline
- * @returns {Promise<void>}
- */
-const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline) => {
-    await fs.mkdir(cacheDir, {recursive: true});
-
-    await fs.appendFile(
-        getCacheFileFullPath(ip, cacheDir, cacheFileName),
-        data.join(cacheFileSeparator) + cacheFileNewline,
-    );
-};
-
-/**
- * @param {string} [ip]
- * @param {object} [opts]
- * @param {string} [opts.cacheDir]
- * @param {string} [opts.cacheFileName]
- * @param {string} [opts.cacheFileSeparator]
- * @param {string} [opts.cacheFileNewline]
- * @param {Map} [opts.cacheMap]
- * @param {number} [opts.cacheMapMaxEntries]
- * @param {number} [opts.rps]
- * @returns {Promise<GeoIpOutput>}
- */
-export const ip2geo = async (ip = '', {
+export const ip2geo = async ({
+    ip = '',
     cacheDir = DEFAULT_CACHE_FILE_DIR,
     cacheFileName = DEFAULT_CACHE_FILE_NAME,
     cacheFileSeparator = DEFAULT_CACHE_FILE_SEPARATOR,
@@ -127,82 +65,50 @@ export const ip2geo = async (ip = '', {
     rps = DEFAULT_RPS,
 } = {}) => {
     if (ip) {
-        if (cacheMapMaxEntries > 0) {
-            const ipData = cacheMap.get(ip);
+        const mapCache = readFromMapCache(ip, cacheMap, cacheMapMaxEntries);
 
-            if (ipData) {
-                debug('get from map cache: %o', ipData);
-                return ipData;
-            }
+        if (mapCache) {
+            return mapCache;
         }
 
         const fsCache = await readFromFsCache(ip, cacheDir, cacheFileName);
 
         if (fsCache) {
-            const data = fsCache.split(cacheFileNewline);
-
-            for (const elem of data) {
-                const fileData = elem.split(cacheFileSeparator);
-
-                if (ip === fileData[0]) {
-                    const outputData = collectOutputData(fileData);
-                    debug('get from fs cache: %o', outputData);
-
-                    if (cacheMapMaxEntries > 0) {
-                        cacheMap.set(ip, outputData);
-                        debug('set to map cache: %o', outputData);
-                    }
-
-                    return outputData;
-                }
-            }
+            writeToMapCache(fsCache, cacheMap, cacheMapMaxEntries);
+            return fsCache;
         }
     }
 
-    const {body} = await request(API + ip, {}, {rps});
+    const reqUrl = API + ip;
+    const {body} = await request(reqUrl, {}, {rps});
 
     if (!body?.ip) {
-        throw new Error(`API error:\n${body}`);
+        logErrorExit(['API error', `request: ${reqUrl}`, `response body: ${body}`]);
     }
 
-    const usedData = [
+    const outputData = collectOutputData([
         body.ip,
-        body?.flag?.emoji,
+        body?.continent,
+        body?.continent_code,
         body?.country,
         body?.country_code,
+        body?.flag?.emoji,
         body?.region,
+        body?.region_code,
         body?.city,
+        body?.connection?.asn,
         body?.connection?.org,
         body?.connection?.isp,
         body?.connection?.domain,
-    ];
+    ]);
 
-    const outputData = collectOutputData(usedData);
-
-    if (cacheMapMaxEntries > 0) {
-        cacheMap.set(body.ip, outputData);
-        debug('set to map cache: %o', outputData);
-    }
+    writeToMapCache(outputData, cacheMap, cacheMapMaxEntries);
+    removeFromMapCacheIfLimit(cacheMap, cacheMapMaxEntries);
 
     await writeToFsCache(
-        body.ip, usedData,
+        body.ip, outputData,
         cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline,
     );
-
-    debug('set to fs cache: %o', outputData);
-
-    if (cacheMap.size > cacheMapMaxEntries) {
-        debug('remove from map cache by limit: size %o, limit: %o', cacheMap.size, cacheMapMaxEntries);
-
-        for (const [key] of cacheMap) {
-            debug('remove from map cache by limit: key %o', key);
-            cacheMap.delete(key);
-
-            if (cacheMap.size <= cacheMapMaxEntries) {
-                break;
-            }
-        }
-    }
 
     return outputData;
 };

@@ -19,7 +19,7 @@ describe(testName, () => {
     it('should remove fs cache dir if exist', () => removeCacheFolder(opts.cacheDir));
 
     it(`should return correct response for IP: "${REQUEST_IPV4.ip}"`, async () => {
-        const data = await ip2geo(REQUEST_IPV4.ip, opts);
+        const data = await ip2geo({ip: REQUEST_IPV4.ip, ...opts});
         assert.deepEqual(data, REQUEST_IPV4);
     });
 
@@ -29,7 +29,7 @@ describe(testName, () => {
     });
 
     it(`should return correct response for IP: "${REQUEST_IPV6.ip}"`, async () => {
-        const data = await ip2geo(REQUEST_IPV6.ip, opts);
+        const data = await ip2geo({ip: REQUEST_IPV6.ip, ...opts});
         assert.deepEqual(data, REQUEST_IPV6);
     });
 

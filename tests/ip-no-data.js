@@ -31,7 +31,7 @@ describe(testName, () => {
         });
 
         it(`should return empty response for IP: "${response.ip}"`, async () => {
-            const data = await ip2geo(response.ip, opts);
+            const data = await ip2geo({ip: response.ip, ...opts});
             assert.deepEqual(data, response);
         });
     });
