@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "GeoIP library",
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
