@@ -40,14 +40,18 @@ export const cacheStorage = new Map();
 /**
  * @typedef {object} ReqOutput
  * @property {string} [ip]
- * @property {string} [emoji]
+ * @property {string} [continent]
+ * @property {string} [continentCode]
  * @property {string} [country]
- * @property {string} [countryA2]
- * @property {string} [city]
+ * @property {string} [countryCode]
+ * @property {string} [countryEmoji]
  * @property {string} [region]
- * @property {string} [org]
- * @property {string} [isp]
- * @property {string} [ispDomain]
+ * @property {string} [regionCode]
+ * @property {string} [city]
+ * @property {string} [connectionAsn]
+ * @property {string} [connectionOrg]
+ * @property {string} [connectionIsp]
+ * @property {string} [connectionDomain]
  */
 
 /**
