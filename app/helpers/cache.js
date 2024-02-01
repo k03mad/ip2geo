@@ -29,7 +29,9 @@ export const collectOutputData = dataArr => {
     const outputData = {};
 
     outputKeys.forEach((key, i) => {
-        outputData[key] = dataArr[i];
+        outputData[key] = key === 'connectionAsn' && dataArr[i]
+            ? Number(dataArr[i])
+            : dataArr[i];
     });
 
     return outputData;

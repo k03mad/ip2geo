@@ -75,7 +75,10 @@ export const ip2geo = async ({
             return mapCache;
         }
 
-        const fsCache = await readFromFsCache(ip, cacheDir, cacheFileName);
+        const fsCache = await readFromFsCache(
+            ip, cacheDir,
+            cacheFileName, cacheFileSeparator, cacheFileNewline,
+        );
 
         if (fsCache) {
             writeToMapCache(fsCache, cacheMap, cacheMapMaxEntries);
