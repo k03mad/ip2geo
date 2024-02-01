@@ -76,8 +76,9 @@ export const ip2geo = async ({
         }
 
         const fsCache = await readFromFsCache(
-            ip, cacheDir,
-            cacheFileName, cacheFileSeparator, cacheFileNewline,
+            ip,
+            cacheDir, cacheFileName,
+            cacheFileSeparator, cacheFileNewline,
         );
 
         if (fsCache) {
@@ -114,7 +115,8 @@ export const ip2geo = async ({
 
     await writeToFsCache(
         body.ip, outputData,
-        cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline,
+        cacheDir, cacheFileName,
+        cacheFileSeparator, cacheFileNewline,
     );
 
     return outputData;
