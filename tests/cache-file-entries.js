@@ -15,12 +15,13 @@ describe(testName, () => {
         cacheDir: getTestFolder(testName),
         cacheMap: new Map(),
         cacheMapMaxEntries: 0,
+        tries: 5,
     };
 
     it('should remove fs cache dir if exist', () => removeCacheFolder(opts.cacheDir));
 
-    ['first try', 'second try'].forEach(name => {
-        describe(name, () => {
+    Array.from({length: opts.tries}, (_, i) => i + 1).forEach(num => {
+        describe(`Try: ${num}`, () => {
             it(`should return correct response for IP: "${REQUEST_IPV4.ip}"`, async () => {
                 const data = await ip2geo({ip: REQUEST_IPV4.ip, ...opts});
                 assert.deepEqual(data, REQUEST_IPV4);
