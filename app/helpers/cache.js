@@ -96,11 +96,10 @@ export const readFromFsCache = async (ip, cacheDir, cacheFileName, cacheFileSepa
  */
 export const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline) => {
     const cacheFileFull = getCacheFileFullPath(ip, cacheDir, cacheFileName);
+    debug('set to fs cache: %o %o', cacheFileFull, data);
 
     await fs.mkdir(cacheDir, {recursive: true});
     await fs.appendFile(cacheFileFull, Object.values(data).join(cacheFileSeparator) + cacheFileNewline);
-
-    debug('set to fs cache: %o %o', cacheFileFull, data);
 };
 
 /**
@@ -111,11 +110,30 @@ export const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFil
  */
 export const readFromMapCache = (ip, cacheMap, cacheMapMaxEntries) => {
     if (cacheMapMaxEntries > 0) {
-        const mapCache = cacheMap.get(ip);
+        const value = cacheMap.get(ip);
 
-        if (mapCache) {
-            debug('get from map cache: %o', mapCache);
-            return mapCache;
+        if (value) {
+            debug('get from map cache: %o', value);
+            return value;
+        }
+    }
+};
+
+/**
+ * @param {Map} cacheMap
+ * @param {number} cacheMapMaxEntries
+ */
+export const removeFromMapCacheIfLimit = (cacheMap, cacheMapMaxEntries) => {
+    if (cacheMap.size > cacheMapMaxEntries) {
+        debug('remove from map cache by limit: %o > %o', cacheMap.size, cacheMapMaxEntries);
+
+        for (const [key] of cacheMap) {
+            debug('remove from map cache by limit: %o', key);
+            cacheMap.delete(key);
+
+            if (cacheMap.size <= cacheMapMaxEntries) {
+                break;
+            }
         }
     }
 };
@@ -128,26 +146,9 @@ export const readFromMapCache = (ip, cacheMap, cacheMapMaxEntries) => {
  */
 export const writeToMapCache = (body, cacheMap, cacheMapMaxEntries) => {
     if (cacheMapMaxEntries > 0) {
-        cacheMap.set(body.ip, body);
         debug('set to map cache: %o', body);
-    }
-};
+        cacheMap.set(body.ip, body);
 
-/**
- * @param {Map} cacheMap
- * @param {number} cacheMapMaxEntries
- */
-export const removeFromMapCacheIfLimit = (cacheMap, cacheMapMaxEntries) => {
-    if (cacheMap.size > cacheMapMaxEntries) {
-        debug('remove from map cache by limit: size %o, limit: %o', cacheMap.size, cacheMapMaxEntries);
-
-        for (const [key] of cacheMap) {
-            debug('remove from map cache by limit: key %o', key);
-            cacheMap.delete(key);
-
-            if (cacheMap.size <= cacheMapMaxEntries) {
-                break;
-            }
-        }
+        removeFromMapCacheIfLimit(cacheMap, cacheMapMaxEntries);
     }
 };

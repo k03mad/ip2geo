@@ -8,7 +8,6 @@ import {
     collectOutputData,
     readFromFsCache,
     readFromMapCache,
-    removeFromMapCacheIfLimit,
     writeToFsCache,
     writeToMapCache,
 } from '../helpers/cache.js';
@@ -91,7 +90,11 @@ export const ip2geo = async ({
     const {body} = await request(reqUrl, {}, {rps});
 
     if (!body?.ip) {
-        logErrorExit(['API error', `request: ${reqUrl}`, `response body: ${body}`]);
+        logErrorExit([
+            'API error',
+            `request: ${reqUrl}`,
+            `response body: ${body}`,
+        ]);
     }
 
     const outputData = collectOutputData([
@@ -111,7 +114,6 @@ export const ip2geo = async ({
     ]);
 
     writeToMapCache(outputData, cacheMap, cacheMapMaxEntries);
-    removeFromMapCacheIfLimit(cacheMap, cacheMapMaxEntries);
 
     await writeToFsCache(
         body.ip, outputData,

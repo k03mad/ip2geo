@@ -4,8 +4,8 @@ import {describe, it} from 'mocha';
 
 import {ip2geo} from '../app/index.js';
 
-import {REQUEST_IPV4} from './helpers/consts.js';
 import {getCurrentFilename, getTestFolder} from './helpers/path.js';
+import {REQUEST_IPV4} from './shared/consts.js';
 import {removeCacheFolder} from './shared/fs.js';
 
 const testName = getCurrentFilename(import.meta.url);
