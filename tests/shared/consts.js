@@ -15,19 +15,19 @@ export const REQUEST_IPV4 = {
 };
 
 export const REQUEST_IPV4_MAP_OFF_ONLY = {
-    ip: '1.1.1.1',
-    continent: 'North America',
-    continentCode: 'NA',
-    country: 'United States',
-    countryCode: 'US',
-    countryEmoji: '🇺🇸',
-    region: 'California',
-    regionCode: 'CA',
-    city: 'San Jose',
-    connectionAsn: 13_335,
-    connectionOrg: 'APNIC and Cloudflare DNS Resolver project',
-    connectionIsp: 'Cloudflare, Inc.',
-    connectionDomain: 'cloudflare.com',
+    ip: '9.9.9.9',
+    continent: 'Europe',
+    continentCode: 'EU',
+    country: 'Switzerland',
+    countryCode: 'CH',
+    countryEmoji: '🇨🇭',
+    region: 'Zurich',
+    regionCode: 'ZH',
+    city: 'Zürich',
+    connectionAsn: 19_281,
+    connectionOrg: 'Quad9',
+    connectionIsp: 'Quad9',
+    connectionDomain: 'quad9.net',
 };
 
 export const REQUEST_IPV6 = {
