@@ -2,7 +2,6 @@ import os from 'node:os';
 import path from 'node:path';
 
 import {request} from '@k03mad/request';
-import {logErrorExit} from '@k03mad/simple-log';
 
 import {
     collectOutputData,
@@ -90,11 +89,11 @@ export const ip2geo = async ({
     const {body} = await request(reqUrl, {}, {rps});
 
     if (!body?.ip) {
-        logErrorExit([
+        throw new Error([
             'API error',
             `request: ${reqUrl}`,
-            `response body: ${body}`,
-        ]);
+            `response body: ${JSON.stringify(body)}`,
+        ].join('\n'));
     }
 
     const outputData = collectOutputData([
