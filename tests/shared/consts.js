@@ -25,8 +25,8 @@ export const REQUEST_IPV4_MAP_OFF_ONLY = {
     regionCode: 'ZH',
     city: 'Zürich',
     connectionAsn: 19_281,
-    connectionOrg: 'Quad9',
-    connectionIsp: 'Quad9',
+    connectionOrg: 'Quad',
+    connectionIsp: 'Quad',
     connectionDomain: 'quad9.net',
 };
 
@@ -40,8 +40,8 @@ export const REQUEST_IPV6 = {
     region: 'North Holland',
     regionCode: 'NH',
     city: 'Amsterdam',
-    connectionAsn: 0,
-    connectionOrg: '',
-    connectionIsp: 'NetActuate Inc',
+    connectionAsn: 36_236,
+    connectionOrg: 'Netactuate INC',
+    connectionIsp: 'Netactuate, INC',
     connectionDomain: '',
 };

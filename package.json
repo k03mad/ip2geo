@@ -28,15 +28,14 @@
     "@k03mad/eslint-config": "20.9.0",
     "eslint": "8.57.0",
     "husky": "9.0.11",
-    "mocha": "10.4.0"
+    "mocha": "10.4.0",
+    "npm-run-all": "4.1.5"
   },
   "scripts": {
     "lint": "npm run lint:eslint",
     "lint:eslint": "eslint ./ --cache",
     "test": "rm -rfv ./.geoip && mocha tests",
-    "clean": "npm run clean:modules && npm run clean:eslint:cache",
-    "clean:modules": "rm -rf ./node_modules || true",
-    "clean:eslint:cache": "rm -rf .eslintcache || true",
+    "clean": "rm -rf ./node_modules .eslintcache || true",
     "setup": "npm run clean && npm run setup:pnpm",
     "setup:pnpm": "npm i pnpm -g && pnpm i",
     "prepare": "husky || true"

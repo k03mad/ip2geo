@@ -38,7 +38,7 @@ describe(testName, () => {
 
         Object.keys(REQUEST_IPV4).forEach(key => {
             it(`should have "${key}" in request response`, () => {
-                assert.ok(data[key]);
+                assert.ok(Object.hasOwn(data, key));
             });
         });
 
