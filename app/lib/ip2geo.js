@@ -67,7 +67,11 @@ export const ip2geo = async ({
     rps = DEFAULT_RPS,
 } = {}) => {
     if (ip) {
-        const mapCache = readFromMapCache(ip, cacheMap, cacheMapMaxEntries);
+        const mapCache = readFromMapCache(
+            ip,
+            cacheMap,
+            cacheMapMaxEntries,
+        );
 
         if (mapCache) {
             return mapCache;
@@ -75,12 +79,19 @@ export const ip2geo = async ({
 
         const fsCache = await readFromFsCache(
             ip,
-            cacheDir, cacheFileName,
-            cacheFileSeparator, cacheFileNewline,
+            cacheDir,
+            cacheFileName,
+            cacheFileSeparator,
+            cacheFileNewline,
         );
 
         if (fsCache) {
-            writeToMapCache(fsCache, cacheMap, cacheMapMaxEntries);
+            writeToMapCache(
+                fsCache,
+                cacheMap,
+                cacheMapMaxEntries,
+            );
+
             return fsCache;
         }
     }
@@ -112,12 +123,19 @@ export const ip2geo = async ({
         body?.connection?.domain,
     ]);
 
-    writeToMapCache(outputData, cacheMap, cacheMapMaxEntries);
+    writeToMapCache(
+        outputData,
+        cacheMap,
+        cacheMapMaxEntries,
+    );
 
     await writeToFsCache(
-        body.ip, outputData,
-        cacheDir, cacheFileName,
-        cacheFileSeparator, cacheFileNewline,
+        body.ip,
+        outputData,
+        cacheDir,
+        cacheFileName,
+        cacheFileSeparator,
+        cacheFileNewline,
     );
 
     return outputData;
