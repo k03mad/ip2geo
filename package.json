@@ -19,13 +19,13 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@k03mad/request": "5.7.0",
-    "@k03mad/simple-log": "2.1.4",
+    "@k03mad/request": "5.8.0",
+    "@k03mad/simple-log": "2.2.0",
     "chalk": "5.3.0",
     "debug": "4.3.5"
   },
   "devDependencies": {
-    "@k03mad/eslint-config": "22.1.0",
+    "@k03mad/eslint-config": "22.4.0",
     "eslint": "8.57.0",
     "husky": "9.0.11",
     "mocha": "10.4.0",
