@@ -40,5 +40,5 @@ export const checkCacheFile = async ({
     const cacheFile = `${response.ip.split(/\.|:/)[0]}_${cacheFileName}`;
     const data = await fs.readFile(path.join(cacheDir, cacheFile), {encoding: 'utf8'});
 
-    assert.equal(data, Object.values(response).join(cacheFileSeparator) + cacheFileNewline);
+    assert.equal(data, cacheFileNewline + Object.values(response).join(cacheFileSeparator));
 };

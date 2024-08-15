@@ -42,13 +42,18 @@ if (isPrune) {
     const cacheFolder = argsExtra[0] || DEFAULT_CACHE_FILE_DIR;
 
     try {
-        const {removedEntries} = await pruneCache(
+        const {duplicates, noData} = await pruneCache(
             cacheFolder,
             DEFAULT_CACHE_FILE_SEPARATOR,
             DEFAULT_CACHE_FILE_NEWLINE,
         );
 
-        log(`Removed duplicate cache entries: ${removedEntries}`);
+        log([
+            `Removed duplicate cache entries: ${duplicates}`,
+            `Removed empty cache entries: ${noData}`,
+            '',
+            `Total: ${duplicates + noData}`,
+        ]);
     } catch (err) {
         if (err.code !== 'ENOENT') {
             logErrorExit(err);

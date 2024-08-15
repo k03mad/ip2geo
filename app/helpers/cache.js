@@ -99,7 +99,7 @@ export const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFil
     debug('set to fs cache: %o %o', cacheFileFull, data);
 
     await fs.mkdir(cacheDir, {recursive: true});
-    await fs.appendFile(cacheFileFull, Object.values(data).join(cacheFileSeparator) + cacheFileNewline);
+    await fs.appendFile(cacheFileFull, cacheFileNewline + Object.values(data).join(cacheFileSeparator));
 };
 
 /**
@@ -168,19 +168,26 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             .join(''),
     );
 
-    let removedEntries = 0;
+    let duplicates = 0;
+    let empty = 0;
 
     await Promise.all(files.map(async file => {
         const fullFilePath = path.join(cacheDir, file);
 
         const data = await fs.readFile(fullFilePath, {encoding: 'utf8'});
-        const dataArr = data.split(cacheFileNewline);
+        const dataArr = data.split(cacheFileNewline).filter(Boolean);
 
-        const uniq = [...new Set(dataArr)].sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
+        const dataArrRemoveEmpty = dataArr.filter(elem => {
+            const splitted = elem.split(cacheFileSeparator);
+            return splitted.filter(Boolean).length > 1;
+        });
+
+        const uniq = [...new Set(dataArrRemoveEmpty)].sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
         await fs.writeFile(fullFilePath, uniq.join(cacheFileNewline).trim());
 
-        removedEntries += dataArr.length - uniq.length;
+        duplicates += dataArr.length - uniq.length;
+        empty += dataArr.length - dataArrRemoveEmpty.length;
     }));
 
-    return {removedEntries};
+    return {duplicates, empty};
 };
