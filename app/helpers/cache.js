@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import _debug from 'debug';
+import ora from 'ora';
 
 const debug = _debug('mad:geoip');
 
@@ -170,7 +171,10 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
 
     let duplicates = 0;
     let empty = 0;
+    let counter = 0;
     const longLinesFiles = new Set();
+
+    const spinner = ora().start();
 
     await Promise.all(files.map(async file => {
         const fullFilePath = path.join(cacheDir, file);
@@ -196,7 +200,11 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
 
         empty += dataArr.length - dataArrRemoveEmpty.length;
         duplicates += dataArrRemoveEmpty.length - uniq.length;
+
+        counter++;
+        spinner.text = `[${counter}/${files.length}]: ${fullFilePath}`;
     }));
 
+    spinner.stop();
     return {duplicates, empty, longLinesFiles};
 };
