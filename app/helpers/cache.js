@@ -177,7 +177,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         const dataArr = data.split(cacheFileNewline);
 
         const uniq = [...new Set(dataArr)].sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
-        await fs.writeFile(fullFilePath, uniq.join(cacheFileNewline));
+        await fs.writeFile(fullFilePath, uniq.join(cacheFileNewline).trim());
 
         removedEntries += dataArr.length - uniq.length;
     }));
