@@ -1,11 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import {log} from '@k03mad/simple-log';
-import chalk from 'chalk';
 import _debug from 'debug';
-
-const {dim, bold} = chalk;
 
 const debug = _debug('mad:geoip');
 
@@ -174,7 +170,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
 
     let duplicates = 0;
     let empty = 0;
-    let counter = 0;
+
     const longLinesFiles = new Set();
 
     await Promise.all(files.map(async file => {
@@ -201,9 +197,6 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
 
         empty += dataArr.length - dataArrRemoveEmpty.length;
         duplicates += dataArrRemoveEmpty.length - uniq.length;
-
-        counter++;
-        log(`${bold(dim(`[${counter}/${files.length}]`))} ${dim(fullFilePath)}`);
     }));
 
     return {duplicates, empty, longLinesFiles};
