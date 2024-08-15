@@ -1,8 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+import {log} from '@k03mad/simple-log';
+import chalk from 'chalk';
 import _debug from 'debug';
-import ora from 'ora';
+
+const {dim, bold} = chalk;
 
 const debug = _debug('mad:geoip');
 
@@ -174,8 +177,6 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
     let counter = 0;
     const longLinesFiles = new Set();
 
-    const spinner = ora().start();
-
     await Promise.all(files.map(async file => {
         const fullFilePath = path.join(cacheDir, file);
 
@@ -202,9 +203,8 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         duplicates += dataArrRemoveEmpty.length - uniq.length;
 
         counter++;
-        spinner.text = `[${counter}/${files.length}]: ${fullFilePath}`;
+        log(`${bold(dim(`[${counter}/${files.length}]`))} ${dim(fullFilePath)}`);
     }));
 
-    spinner.stop();
     return {duplicates, empty, longLinesFiles};
 };

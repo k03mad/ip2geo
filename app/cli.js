@@ -52,6 +52,7 @@ if (isPrune) {
         );
 
         const message = [
+            '',
             `Removed duplicate cache entries: ${green(duplicates)}`,
             `Removed empty cache entries: ${green(empty)}`,
         ];
