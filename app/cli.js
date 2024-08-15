@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 
 import {log, logErrorExit} from '@k03mad/simple-log';
+import chalk from 'chalk';
 
 import {DEFAULT_CACHE_FILE_DIR, DEFAULT_CACHE_FILE_NEWLINE, DEFAULT_CACHE_FILE_SEPARATOR, ip2geo} from './api.js';
 import {pruneCache} from './helpers/cache.js';
 import {codeText, nameText} from './helpers/colors.js';
+
+const {blue, red, green} = chalk;
 
 const args = process.argv.slice(2);
 const argsExtra = args.filter(arg => !arg.startsWith('-'));
@@ -42,18 +45,26 @@ if (isPrune) {
     const cacheFolder = argsExtra[0] || DEFAULT_CACHE_FILE_DIR;
 
     try {
-        const {duplicates, noData} = await pruneCache(
+        const {duplicates, empty, longLinesFiles} = await pruneCache(
             cacheFolder,
             DEFAULT_CACHE_FILE_SEPARATOR,
             DEFAULT_CACHE_FILE_NEWLINE,
         );
 
-        log([
-            `Removed duplicate cache entries: ${duplicates}`,
-            `Removed empty cache entries: ${noData}`,
-            '',
-            `Total: ${duplicates + noData}`,
-        ]);
+        const message = [
+            `Removed duplicate cache entries: ${green(duplicates)}`,
+            `Removed empty cache entries: ${green(empty)}`,
+        ];
+
+        if (longLinesFiles.size > 0) {
+            message.push(
+                '',
+                red('Something went wrong with these cache files (lines too long):'),
+                ...[...longLinesFiles].map(elem => blue(`— ${elem}`)),
+            );
+        }
+
+        log(message);
     } catch (err) {
         if (err.code !== 'ENOENT') {
             logErrorExit(err);

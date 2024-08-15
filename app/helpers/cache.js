@@ -170,6 +170,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
 
     let duplicates = 0;
     let empty = 0;
+    const longLinesFiles = new Set();
 
     await Promise.all(files.map(async file => {
         const fullFilePath = path.join(cacheDir, file);
@@ -179,6 +180,11 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
 
         const dataArrRemoveEmpty = dataArr.filter(elem => {
             const splitted = elem.split(cacheFileSeparator);
+
+            if (splitted.length > outputKeys.length) {
+                longLinesFiles.add(fullFilePath);
+            }
+
             return splitted.filter(Boolean).length > 1;
         });
 
@@ -189,5 +195,5 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         empty += dataArr.length - dataArrRemoveEmpty.length;
     }));
 
-    return {duplicates, empty};
+    return {duplicates, empty, longLinesFiles};
 };
