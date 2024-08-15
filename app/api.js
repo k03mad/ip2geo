@@ -9,7 +9,7 @@ import {
     readFromMapCache,
     writeToFsCache,
     writeToMapCache,
-} from '../helpers/cache.js';
+} from './helpers/cache.js';
 
 const API = 'https://ipwho.is/';
 

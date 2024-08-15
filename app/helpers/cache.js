@@ -152,3 +152,35 @@ export const writeToMapCache = (body, cacheMap, cacheMapMaxEntries) => {
         removeFromMapCacheIfLimit(cacheMap, cacheMapMaxEntries);
     }
 };
+
+/**
+ * @param {string} cacheDir
+ * @param {string} cacheFileSeparator
+ * @param {string} cacheFileNewline
+ */
+export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline) => {
+    const files = await fs.readdir(cacheDir);
+
+    const cacheLineToNum = line => Number(
+        line.split(cacheFileSeparator)[0]
+            .split('.')
+            .map(num => `00${num}`.slice(-3))
+            .join(''),
+    );
+
+    let removedEntries = 0;
+
+    await Promise.all(files.map(async file => {
+        const fullFilePath = path.join(cacheDir, file);
+
+        const data = await fs.readFile(fullFilePath, {encoding: 'utf8'});
+        const dataArr = data.split(cacheFileNewline);
+
+        const uniq = [...new Set(dataArr)].sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
+        await fs.writeFile(fullFilePath, uniq.join(cacheFileNewline));
+
+        removedEntries += dataArr.length - uniq.length;
+    }));
+
+    return {removedEntries};
+};

@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import {describe, it} from 'mocha';
 
-import {ip2geo} from '../app/index.js';
+import {ip2geo} from '../app/api.js';
 
 import {getCurrentFilename, getTestFolder} from './helpers/path.js';
 import {REQUEST_IPV4} from './shared/consts.js';

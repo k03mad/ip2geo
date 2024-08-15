@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "7.4.0",
+  "version": "7.5.0",
   "description": "GeoIP library",
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
@@ -8,7 +8,7 @@
   "bin": {
     "ip2geo": "app/cli.js"
   },
-  "main": "app/index.js",
+  "main": "app/api.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/k03mad/ip2geo.git"
@@ -28,7 +28,7 @@
     "@k03mad/eslint-config": "23.0.0",
     "eslint": "8.57.0",
     "husky": "9.1.4",
-    "mocha": "10.7.0",
+    "mocha": "10.7.3",
     "npm-run-all": "4.1.5"
   },
   "scripts": {

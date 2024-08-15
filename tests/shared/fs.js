@@ -7,7 +7,7 @@ import {
     DEFAULT_CACHE_FILE_NAME,
     DEFAULT_CACHE_FILE_NEWLINE,
     DEFAULT_CACHE_FILE_SEPARATOR,
-} from '../../app/index.js';
+} from '../../app/api.js';
 
 /**
  * @param {string} cacheDir

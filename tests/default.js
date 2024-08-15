@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 
 import {describe, it} from 'mocha';
 
-import {cacheStorage, ip2geo} from '../app/index.js';
+import {cacheStorage, ip2geo} from '../app/api.js';
 
 import {getCurrentFilename} from './helpers/path.js';
 import {REQUEST_IPV4} from './shared/consts.js';
