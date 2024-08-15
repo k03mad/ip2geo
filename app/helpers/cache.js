@@ -188,11 +188,14 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             return splitted.filter(Boolean).length > 1;
         });
 
-        const uniq = [...new Set(dataArrRemoveEmpty)].sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
-        await fs.writeFile(fullFilePath, uniq.join(cacheFileNewline).trim());
+        const uniq = [...new Set(dataArrRemoveEmpty)]
+            .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
 
-        duplicates += dataArr.length - uniq.length;
+        const fileContent = uniq.join(cacheFileNewline).trim();
+        await (fileContent ? fs.writeFile(fullFilePath, fileContent) : fs.rm(fullFilePath));
+
         empty += dataArr.length - dataArrRemoveEmpty.length;
+        duplicates += dataArrRemoveEmpty.length - uniq.length;
     }));
 
     return {duplicates, empty, longLinesFiles};
