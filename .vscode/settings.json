@@ -1,3 +1,7 @@
 {
-    "eslint.experimental.useFlatConfig": true
+    "cSpell.words": [
+      "consts",
+      "geoip",
+      "nvmrc"
+    ]
 }

@@ -5,6 +5,8 @@ import _debug from 'debug';
 
 const debug = _debug('mad:geoip');
 
+const ipRe = /((25[0-5]|((?:2[0-4]|1\d|[1-9])?)\d)\.?\b){4}/;
+
 const outputKeys = [
     'ip',
     'continent',
@@ -161,6 +163,19 @@ export const writeToMapCache = (body, cacheMap, cacheMapMaxEntries) => {
 export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline) => {
     const files = await fs.readdir(cacheDir);
 
+    await Promise.all(files.map(async file => {
+        const fullFilePath = path.join(cacheDir, file);
+
+        const [stat, data] = await Promise.all([
+            fs.lstat(fullFilePath),
+            fs.readFile(fullFilePath, {encoding: 'utf8'}),
+        ]);
+
+        if (stat.isDirectory() || !ipRe.test(data)) {
+            throw new Error(`Folder has subfolders or files without IPs, wrong cache folder arg?\n${fullFilePath}`);
+        }
+    }));
+
     const cacheLineToNum = line => Number(
         line.split(cacheFileSeparator)[0]
             .split('.')
@@ -168,9 +183,8 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             .join(''),
     );
 
-    let duplicates = 0;
-    let empty = 0;
-
+    const duplicates = new Set();
+    const empty = [];
     const longLinesFiles = new Set();
 
     await Promise.all(files.map(async file => {
@@ -183,10 +197,14 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             const splitted = elem.split(cacheFileSeparator);
 
             if (splitted.length > outputKeys.length) {
-                longLinesFiles.add(fullFilePath);
+                longLinesFiles.add({file: fullFilePath, elem});
             }
 
-            return splitted.filter(Boolean).length > 1;
+            if (splitted.filter(Boolean).length > 1) {
+                return true;
+            }
+
+            empty.push(elem);
         });
 
         const uniq = [...new Set(dataArrRemoveEmpty)]
@@ -195,9 +213,13 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         const fileContent = uniq.join(cacheFileNewline).trim();
         await (fileContent ? fs.writeFile(fullFilePath, fileContent) : fs.rm(fullFilePath));
 
-        empty += dataArr.length - dataArrRemoveEmpty.length;
-        duplicates += dataArrRemoveEmpty.length - uniq.length;
+        dataArrRemoveEmpty
+            .forEach((elem, i, arr) => arr.indexOf(elem) !== i && duplicates.add(elem));
     }));
 
-    return {duplicates, empty, longLinesFiles};
+    return {
+        duplicates: [...duplicates],
+        empty,
+        longLinesFiles: [...longLinesFiles],
+    };
 };

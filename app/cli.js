@@ -7,7 +7,7 @@ import {DEFAULT_CACHE_FILE_DIR, DEFAULT_CACHE_FILE_NEWLINE, DEFAULT_CACHE_FILE_S
 import {pruneCache} from './helpers/cache.js';
 import {codeText, nameText} from './helpers/colors.js';
 
-const {blue, red, green} = chalk;
+const {blue, red, green, dim, bold} = chalk;
 
 const args = process.argv.slice(2);
 const argsExtra = args.filter(arg => !arg.startsWith('-'));
@@ -43,6 +43,7 @@ if (isHelp) {
 
 if (isPrune) {
     const cacheFolder = argsExtra[0] || DEFAULT_CACHE_FILE_DIR;
+    log(blue(cacheFolder));
 
     try {
         const {duplicates, empty, longLinesFiles} = await pruneCache(
@@ -51,27 +52,22 @@ if (isPrune) {
             DEFAULT_CACHE_FILE_NEWLINE,
         );
 
-        const message = [
+        log([
             '',
-            `Removed duplicate cache entries: ${green(duplicates)}`,
-            `Removed empty cache entries: ${green(empty)}`,
-        ];
+            green(`Removed duplicate cache entries: ${bold(duplicates.length)}`),
+            ...duplicates.map(elem => dim(`— ${elem}`)),
+            green(`Removed empty cache entries: ${bold(empty.length)}`),
+            ...empty.map(elem => dim(`— ${elem}`)),
+        ]);
 
-        if (longLinesFiles.size > 0) {
-            message.push(
-                '',
-                red('Something went wrong with these cache files (lines too long):'),
-                ...[...longLinesFiles].map(elem => blue(`— ${elem}`)),
-            );
+        if (longLinesFiles.length > 0) {
+            log([
+                red(`Required manual check, some cache files has too long lines: ${bold(longLinesFiles.length)}`),
+                ...longLinesFiles.map(({file, elem}) => dim(`— ${file}\n|— ${elem}`)),
+            ]);
         }
-
-        log(message);
     } catch (err) {
-        if (err.code !== 'ENOENT') {
-            logErrorExit(err);
-        }
-
-        log(`Cache folder empty: ${cacheFolder}`);
+        logErrorExit(red(err));
     }
 } else {
     const output = argsExtra.length === 0
