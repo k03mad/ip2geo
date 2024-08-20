@@ -2,10 +2,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import _debug from 'debug';
+import {isIP} from 'is-ip';
 
 const debug = _debug('mad:geoip');
-
-const ipRe = /((25[0-5]|((?:2[0-4]|1\d|[1-9])?)\d)\.?\b){4}/;
 
 const outputKeys = [
     'ip',
@@ -171,7 +170,15 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             fs.readFile(fullFilePath, {encoding: 'utf8'}),
         ]);
 
-        if (stat.isDirectory() || !ipRe.test(data)) {
+        const firstIp = data
+            .split(cacheFileNewline)
+            .find(Boolean)
+            .split(cacheFileSeparator)[0];
+
+        if (
+            stat.isDirectory()
+            || !isIP(firstIp)
+        ) {
             throw new Error(`Folder has subfolders or files without IPs, wrong cache folder arg?\n${fullFilePath}`);
         }
     }));
