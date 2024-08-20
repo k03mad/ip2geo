@@ -193,6 +193,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
     const duplicates = new Set();
     const empty = [];
     const longLinesFiles = new Set();
+    let entries = 0;
 
     await Promise.all(files.map(async file => {
         const fullFilePath = path.join(cacheDir, file);
@@ -218,13 +219,20 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
 
         const fileContent = uniq.join(cacheFileNewline).trim();
-        await (fileContent ? fs.writeFile(fullFilePath, fileContent) : fs.rm(fullFilePath));
+
+        if (fileContent) {
+            await fs.writeFile(fullFilePath, fileContent);
+            entries += uniq.length;
+        } else {
+            await fs.rm(fullFilePath);
+        }
 
         dataArrRemoveEmpty
             .forEach((elem, i, arr) => arr.indexOf(elem) !== i && duplicates.add(elem));
     }));
 
     return {
+        entries,
         duplicates: [...duplicates],
         empty,
         longLinesFiles: [...longLinesFiles],

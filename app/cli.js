@@ -46,7 +46,7 @@ if (isPrune) {
     log(blue(cacheFolder));
 
     try {
-        const {duplicates, empty, longLinesFiles} = await pruneCache(
+        const {duplicates, empty, entries, longLinesFiles} = await pruneCache(
             cacheFolder,
             DEFAULT_CACHE_FILE_SEPARATOR,
             DEFAULT_CACHE_FILE_NEWLINE,
@@ -66,6 +66,11 @@ if (isPrune) {
                 ...longLinesFiles.map(({file, elem}) => dim(`— ${file}\n|— ${elem}`)),
             ]);
         }
+
+        log([
+            '',
+            green(`Current cache entries: ${bold(entries)}`),
+        ]);
     } catch (err) {
         logErrorExit(red(err));
     }
