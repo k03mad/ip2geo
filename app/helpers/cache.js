@@ -191,6 +191,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
     );
 
     const duplicates = new Set();
+    const different = new Set();
     const empty = [];
     const longLinesFiles = new Set();
     let entries = 0;
@@ -216,7 +217,20 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         });
 
         const uniq = [...new Set(dataArrRemoveEmpty)]
-            .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
+            .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b))
+            .filter((elem, i, arr) => {
+                for (const [j, line] of arr.entries()) {
+                    if (
+                        i !== j
+                        && line.split(cacheFileSeparator)[0] === elem.split(cacheFileSeparator)[0]
+                    ) {
+                        different.add(elem);
+                        return false;
+                    }
+                }
+
+                return true;
+            });
 
         const fileContent = uniq.join(cacheFileNewline).trim();
 
@@ -234,6 +248,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
     return {
         entries,
         duplicates: [...duplicates],
+        different: [...different],
         empty,
         longLinesFiles: [...longLinesFiles],
     };

@@ -46,7 +46,13 @@ if (isPrune) {
     log(blue(cacheFolder));
 
     try {
-        const {duplicates, empty, entries, longLinesFiles} = await pruneCache(
+        const {
+            different,
+            duplicates,
+            empty,
+            entries,
+            longLinesFiles,
+        } = await pruneCache(
             cacheFolder,
             DEFAULT_CACHE_FILE_SEPARATOR,
             DEFAULT_CACHE_FILE_NEWLINE,
@@ -56,6 +62,8 @@ if (isPrune) {
             '',
             green(`Removed duplicate cache entries: ${bold(duplicates.length)}`),
             ...duplicates.map(elem => dim(`— ${elem}`)),
+            green(`Removed different cache entries: ${bold(different.length)}`),
+            ...different.map(elem => dim(`— ${elem}`)),
             green(`Removed empty cache entries: ${bold(empty.length)}`),
             ...empty.map(elem => dim(`— ${elem}`)),
         ]);
