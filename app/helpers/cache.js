@@ -221,6 +221,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         const uniqSorted = [...new Set(dataArrRemoveEmpty)]
             .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
 
+        getArrayDups(dataArrRemoveEmpty).forEach(dup => duplicates.add(dup));
         const dupsIp = getArrayDups(uniqSorted.map(elem => elem.split(cacheFileSeparator)[0]));
 
         const removeDiffs = uniqSorted.filter(elem => {
@@ -240,9 +241,6 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         } else {
             await fs.rm(fullFilePath);
         }
-
-        const dups = getArrayDups(dataArrRemoveEmpty);
-        dups.forEach(dup => duplicates.add(dup));
     }));
 
     return {
