@@ -4,6 +4,8 @@ import path from 'node:path';
 import _debug from 'debug';
 import {isIP} from 'is-ip';
 
+import {getArrayDups} from './utils.js';
+
 const debug = _debug('mad:geoip');
 
 const outputKeys = [
@@ -216,33 +218,31 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             empty.push(elem);
         });
 
-        const uniq = [...new Set(dataArrRemoveEmpty)]
-            .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b))
-            .filter((elem, i, arr) => {
-                for (const [j, line] of arr.entries()) {
-                    if (
-                        i !== j
-                        && line.split(cacheFileSeparator)[0] === elem.split(cacheFileSeparator)[0]
-                    ) {
-                        different.add(elem);
-                        return false;
-                    }
-                }
+        const uniqSorted = [...new Set(dataArrRemoveEmpty)]
+            .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
 
-                return true;
-            });
+        const dupsIp = getArrayDups(uniqSorted.map(elem => elem.split(cacheFileSeparator)[0]));
 
-        const fileContent = uniq.join(cacheFileNewline).trim();
+        const removeDiffs = uniqSorted.filter(elem => {
+            if (dupsIp.includes(elem.split(cacheFileSeparator)[0])) {
+                different.add(elem);
+                return false;
+            }
+
+            return true;
+        });
+
+        const fileContent = removeDiffs.join(cacheFileNewline).trim();
 
         if (fileContent) {
             await fs.writeFile(fullFilePath, fileContent);
-            entries += uniq.length;
+            entries += removeDiffs.length;
         } else {
             await fs.rm(fullFilePath);
         }
 
-        dataArrRemoveEmpty
-            .forEach((elem, i, arr) => arr.indexOf(elem) !== i && duplicates.add(elem));
+        const dups = getArrayDups(dataArrRemoveEmpty);
+        dups.forEach(dup => duplicates.add(dup));
     }));
 
     return {
