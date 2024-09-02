@@ -37,7 +37,7 @@ export const checkCacheFile = async ({
     cacheFileNewline = DEFAULT_CACHE_FILE_NEWLINE,
     response,
 }) => {
-    const cacheFile = `${response.ip.split(/\.|:/)[0]}_${cacheFileName}`;
+    const cacheFile = `${response.ip.split(/[.:]/)[0]}_${cacheFileName}`;
     const data = await fs.readFile(path.join(cacheDir, cacheFile), {encoding: 'utf8'});
 
     assert.equal(data, cacheFileNewline + Object.values(response).join(cacheFileSeparator));

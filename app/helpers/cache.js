@@ -47,7 +47,7 @@ export const collectOutputData = dataArr => {
  * @returns {string}
  */
 const getCacheFileFullPath = (ip, cacheDir, cacheFileName) => {
-    const [firstOctet] = ip.split(/\.|:/);
+    const [firstOctet] = ip.split(/[.:]/);
     return path.join(cacheDir, `${firstOctet}_${cacheFileName}`);
 };
 

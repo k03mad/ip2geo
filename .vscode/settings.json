@@ -3,6 +3,7 @@
       "consts",
       "dups",
       "geoip",
-      "nvmrc"
+      "nvmrc",
+      "sonarjs"
     ]
 }
