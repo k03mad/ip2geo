@@ -43,5 +43,5 @@ export const REQUEST_IPV6 = {
     connectionAsn: 36_236,
     connectionOrg: 'Netactuate INC',
     connectionIsp: 'Netactuate, INC',
-    connectionDomain: '',
+    connectionDomain: 'netactuate.com',
 };
