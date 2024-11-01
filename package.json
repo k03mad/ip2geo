@@ -26,7 +26,7 @@
     "is-ip": "5.0.1"
   },
   "devDependencies": {
-    "@k03mad/eslint-config": "25.6.0",
+    "@k03mad/eslint-config": "25.6.4",
     "eslint": "8.57.1",
     "husky": "9.1.6",
     "mocha": "10.7.3",
