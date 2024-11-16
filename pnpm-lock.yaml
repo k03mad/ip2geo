@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@k03mad/request':
-        specifier: 6.3.0
-        version: 6.3.0
+        specifier: 6.4.0
+        version: 6.4.0
       '@k03mad/simple-log':
         specifier: 4.2.0
         version: 4.2.0
@@ -749,8 +749,8 @@ packages:
     resolution: {integrity: sha512-1Y62MN2PrTrofGNK8d5sxdVbO9bZMJlYguFfAwbiew8jMNyiRrPCxYi3HBctgyEBCZaTaBl6OxIC0XkTk4vw1w==}
     engines: {node: '>=20'}
 
-  '@k03mad/request@6.3.0':
-    resolution: {integrity: sha512-J5JeQt8yPB4eU7lq8LEwLleGFdYVu7VTxAosTvfQ6qdb2BuqRTepnFEwikCTVgEeAAGyfO+EWK9IYXpjIB42Og==}
+  '@k03mad/request@6.4.0':
+    resolution: {integrity: sha512-6PsBP+jQqT2jfyoB3lWKxDz2qTcXfsecLwzwmyMzbD3+yTDL6J0f2AaRnLXgPKg88XiapoCrPVURkBLGsaJTaA==}
     engines: {node: '>=20'}
 
   '@k03mad/simple-date@3.1.0':
@@ -786,8 +786,8 @@ packages:
   '@sec-ant/readable-stream@0.4.1':
     resolution: {integrity: sha512-831qok9r2t8AlxLko40y2ebgSDhenenCatLVeW/uBtnHPyhHOvG0C7TvfgecV+wHzIm5KUICgzmVpWS+IMEAeg==}
 
-  '@sindresorhus/is@7.0.0':
-    resolution: {integrity: sha512-WDTlVTyvFivSOuyvMeedzg2hdoBLZ3f1uNVuEida2Rl9BrfjrIRjWA/VZIrMRLvSwJYCAlCRA3usDt1THytxWQ==}
+  '@sindresorhus/is@7.0.1':
+    resolution: {integrity: sha512-QWLl2P+rsCJeofkDNIT3WFmb6NrRud1SUYW8dIhXK/46XFV8Q/g7Bsvib0Askb0reRLe+WYPeeE+l5cH7SlkuQ==}
     engines: {node: '>=18'}
 
   '@stylistic/eslint-plugin@2.8.0':
@@ -1625,8 +1625,8 @@ packages:
   gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
 
-  got@14.4.2:
-    resolution: {integrity: sha512-+Te/qEZ6hr7i+f0FNgXx/6WQteSM/QqueGvxeYQQFm0GDfoxLVJ/oiwUKYMTeioColWUTdewZ06hmrBjw6F7tw==}
+  got@14.4.4:
+    resolution: {integrity: sha512-tqiF7eSgTBwQkxb1LxsEpva8TaMYVisbhplrFVmw9GQE3855Z+MH/mnsXLLOkDxR6hZJRFMj5VTAZ8lmTF8ZOA==}
     engines: {node: '>=20'}
 
   graceful-fs@4.2.11:
@@ -2527,8 +2527,8 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
-  type-fest@4.23.0:
-    resolution: {integrity: sha512-ZiBujro2ohr5+Z/hZWHESLz3g08BBdrdLMieYFULJO+tWc437sn8kQsWLJoZErY8alNhxre9K4p3GURAG11n+w==}
+  type-fest@4.27.0:
+    resolution: {integrity: sha512-3IMSWgP7C5KSQqmo1wjhKrwsvXAtF33jO3QY+Uy++ia7hqvgSK6iXbbg5PbDBc1P2ZbNEDgejOrN4YooXvhwCw==}
     engines: {node: '>=16'}
 
   typed-array-buffer@1.0.2:
@@ -3588,11 +3588,11 @@ snapshots:
       - typescript
       - vue-eslint-parser
 
-  '@k03mad/request@6.3.0':
+  '@k03mad/request@6.4.0':
     dependencies:
       chalk: 5.3.0
       debug: 4.3.7(supports-color@8.1.1)
-      got: 14.4.2
+      got: 14.4.4
       p-queue: 8.0.1
       pretty-bytes: 6.1.1
       strip-ansi: 7.1.0
@@ -3627,7 +3627,7 @@ snapshots:
 
   '@sec-ant/readable-stream@0.4.1': {}
 
-  '@sindresorhus/is@7.0.0': {}
+  '@sindresorhus/is@7.0.1': {}
 
   '@stylistic/eslint-plugin@2.8.0(eslint@8.57.1)(typescript@5.5.4)':
     dependencies:
@@ -4759,9 +4759,9 @@ snapshots:
     dependencies:
       get-intrinsic: 1.2.4
 
-  got@14.4.2:
+  got@14.4.4:
     dependencies:
-      '@sindresorhus/is': 7.0.0
+      '@sindresorhus/is': 7.0.1
       '@szmarczak/http-timer': 5.0.1
       cacheable-lookup: 7.0.0
       cacheable-request: 12.0.1
@@ -4771,7 +4771,7 @@ snapshots:
       lowercase-keys: 3.0.0
       p-cancelable: 4.0.1
       responselike: 3.0.0
-      type-fest: 4.23.0
+      type-fest: 4.27.0
 
   graceful-fs@4.2.11: {}
 
@@ -5651,7 +5651,7 @@ snapshots:
 
   type-fest@0.8.1: {}
 
-  type-fest@4.23.0: {}
+  type-fest@4.27.0: {}
 
   typed-array-buffer@1.0.2:
     dependencies:
