@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@k03mad/request':
-        specifier: 7.5.0
-        version: 7.5.0
+        specifier: 7.6.0
+        version: 7.6.0
       '@k03mad/simple-log':
         specifier: 5.1.0
         version: 5.1.0
@@ -116,8 +116,8 @@ packages:
     resolution: {integrity: sha512-E2uejDI6dMYkx0vwTUGa6vynfYZOXPBiVIPvKccXNh/1PsTURCxl/9T2AM0rNG0SFAhbvEmoqcnvcq15/Ku5Uw==}
     engines: {node: '>=22'}
 
-  '@k03mad/request@7.5.0':
-    resolution: {integrity: sha512-F5yYnfwRGqU0Xzqt2JHiyOQP9yR8PrORQLfFAFiQewibFrnBSYzdTjk0MxgJrlKPUaGE9g/V5FNuDrzIDfwsdw==}
+  '@k03mad/request@7.6.0':
+    resolution: {integrity: sha512-IEYtbL5Q7822CqqkgoDDiFhvpP5in5d6SR1VXhHeDFTuZPicOEZJVy+/fRtCW9WoPR/oHsYTwPbVa/IUIqwYpw==}
     engines: {node: '>=22'}
 
   '@k03mad/simple-date@4.1.0':
@@ -744,8 +744,8 @@ packages:
   gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
 
-  got@14.4.4:
-    resolution: {integrity: sha512-tqiF7eSgTBwQkxb1LxsEpva8TaMYVisbhplrFVmw9GQE3855Z+MH/mnsXLLOkDxR6hZJRFMj5VTAZ8lmTF8ZOA==}
+  got@14.4.5:
+    resolution: {integrity: sha512-sq+uET8TnNKRNnjEOPJzMcxeI0irT8BBNmf+GtZcJpmhYsQM1DSKmCROUjPWKsXZ5HzwD5Cf5/RV+QD9BSTxJg==}
     engines: {node: '>=20'}
 
   graceful-fs@4.2.11:
@@ -1640,11 +1640,11 @@ snapshots:
       - supports-color
       - typescript
 
-  '@k03mad/request@7.5.0':
+  '@k03mad/request@7.6.0':
     dependencies:
       chalk: 5.3.0
       debug: 4.3.7(supports-color@8.1.1)
-      got: 14.4.4
+      got: 14.4.5
       p-queue: 8.0.1
       pretty-bytes: 6.1.1
       strip-ansi: 7.1.0
@@ -2418,7 +2418,7 @@ snapshots:
     dependencies:
       get-intrinsic: 1.2.4
 
-  got@14.4.4:
+  got@14.4.5:
     dependencies:
       '@sindresorhus/is': 7.0.1
       '@szmarczak/http-timer': 5.0.1
