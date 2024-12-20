@@ -172,16 +172,15 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
             fs.readFile(fullFilePath, {encoding: 'utf8'}),
         ]);
 
-        const firstIp = data
-            ?.split(cacheFileNewline)
-            ?.find(Boolean)
-            ?.split(cacheFileSeparator)[0];
+        if (stat.isDirectory()) {
+            const firstIp = data
+                ?.split(cacheFileNewline)
+                ?.find(Boolean)
+                ?.split(cacheFileSeparator)[0];
 
-        if (
-            stat.isDirectory()
-            || !isIP(firstIp || '')
-        ) {
-            throw new Error(`Folder has subfolders or files without IPs, wrong cache folder arg?\n${fullFilePath}`);
+            if (firstIp && !isIP(firstIp)) {
+                throw new Error(`Folder has subfolders or files without IPs, wrong cache folder arg?\n${fullFilePath}`);
+            }
         }
     }));
 
