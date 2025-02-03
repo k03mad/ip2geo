@@ -18,7 +18,7 @@ export const DEFAULT_CACHE_FILE_NAME = 'ip.log';
 export const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 export const DEFAULT_CACHE_FILE_NEWLINE = '\n';
 export const DEFAULT_CACHE_MAP_MAX_ENTRIES = Number.POSITIVE_INFINITY;
-export const DEFAULT_RPS = 3;
+export const DEFAULT_CONCURRENCY = 2;
 
 export const cacheStorage = new Map();
 
@@ -33,6 +33,7 @@ export const cacheStorage = new Map();
  * @property {Map} [opts.cacheMap]
  * @property {number} [opts.cacheMapMaxEntries]
  * @property {number} [opts.rps]
+ * @property {number} [opts.concurrency]
  */
 
 /**
@@ -64,7 +65,8 @@ export const ip2geo = async ({
     cacheFileNewline = DEFAULT_CACHE_FILE_NEWLINE,
     cacheMapMaxEntries = DEFAULT_CACHE_MAP_MAX_ENTRIES,
     cacheMap = cacheStorage,
-    rps = DEFAULT_RPS,
+    rps,
+    concurrency,
 } = {}) => {
     if (ip) {
         const mapCache = readFromMapCache(
@@ -97,7 +99,17 @@ export const ip2geo = async ({
     }
 
     const reqUrl = API + ip;
-    const {body} = await request(reqUrl, {}, {rps});
+    const queueOpts = {};
+
+    if (rps) {
+        queueOpts.rps = rps;
+    } else if (concurrency) {
+        queueOpts.concurrency = concurrency;
+    } else {
+        queueOpts.concurrency = DEFAULT_CONCURRENCY;
+    }
+
+    const {body} = await request(reqUrl, {}, queueOpts);
 
     if (!body?.ip) {
         throw new Error([
