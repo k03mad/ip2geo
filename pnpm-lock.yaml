@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@k03mad/request':
-        specifier: 7.18.0
-        version: 7.18.0
+        specifier: 7.19.0
+        version: 7.19.0
       '@k03mad/simple-log':
         specifier: 5.3.0
         version: 5.3.0
@@ -133,8 +133,8 @@ packages:
     resolution: {integrity: sha512-k2gVAGxb5jFYBiVBVmUhMQT22khit+bzWRaGl3CkVZaagQAoo+qtd3tfhmLNQgq9DZuxGoWFKjvIjBTCTIbtKQ==}
     engines: {node: '>=22'}
 
-  '@k03mad/request@7.18.0':
-    resolution: {integrity: sha512-7TABqr7JKGx79NlGpXmzFvXqOveSdluP8jMS831fWXCrMce4GhzuHYBpuqXpwHw+A4onyD+URGuUAEw+ju+7UA==}
+  '@k03mad/request@7.19.0':
+    resolution: {integrity: sha512-Rhkg3X+PaDioQEsX03fS2vH0+9zVhye7Vb4vOCTqft59Ox5BhW77ZEKb8WBZeDFl3Zv5rlGc6xP6MiT7/AzCsQ==}
     engines: {node: '>=22'}
 
   '@k03mad/simple-date@4.3.0':
@@ -562,8 +562,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.198:
-    resolution: {integrity: sha512-G5COfnp3w+ydVu80yprgWSfmfQaYRh9DOxfhAxstLyetKaLyl55QrNjx8C38Pc/C+RaDmb1M0Lk8wPEMQ+bGgQ==}
+  electron-to-chromium@1.5.199:
+    resolution: {integrity: sha512-3gl0S7zQd88kCAZRO/DnxtBKuhMO4h0EaQIN3YgZfV6+pW+5+bf2AdQeHNESCoaQqo/gjGVYEf2YM4O5HJQqpQ==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1839,7 +1839,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@k03mad/request@7.18.0':
+  '@k03mad/request@7.19.0':
     dependencies:
       chalk: 5.5.0
       debug: 4.4.1(supports-color@8.1.1)
@@ -2090,7 +2090,7 @@ snapshots:
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001731
-      electron-to-chromium: 1.5.198
+      electron-to-chromium: 1.5.199
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.1)
 
@@ -2258,7 +2258,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.198: {}
+  electron-to-chromium@1.5.199: {}
 
   emoji-regex@8.0.0: {}
 
