@@ -216,7 +216,7 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
         });
 
         const uniqSorted = [...new Set(dataArrRemoveEmpty)]
-            .sort((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
+            .toSorted((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
 
         getArrayDups(dataArrRemoveEmpty).forEach(dup => duplicates.add(dup));
         const dupsIp = getArrayDups(uniqSorted.map(elem => elem.split(cacheFileSeparator)[0]));
