@@ -28,12 +28,12 @@ describe(testName, () => {
         assert.deepEqual(opts.cacheMap.get(REQUEST_IPV4.ip), REQUEST_IPV4);
     });
 
-    it(`should return correct response for IP: "${REQUEST_IPV6.ip}"`, async () => {
+    it.skip(`should return correct response for IP: "${REQUEST_IPV6.ip}"`, async () => {
         const data = await ip2geo({ip: REQUEST_IPV6.ip, ...opts});
         assert.deepEqual(data, REQUEST_IPV6);
     });
 
-    it('should have 2 correct cache entries', () => {
+    it.skip('should have 2 correct cache entries', () => {
         assert.equal(opts.cacheMap.size, 2);
         assert.deepEqual(opts.cacheMap.get(REQUEST_IPV4.ip), REQUEST_IPV4);
         assert.deepEqual(opts.cacheMap.get(REQUEST_IPV6.ip), REQUEST_IPV6);

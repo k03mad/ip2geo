@@ -34,7 +34,7 @@
   },
   "scripts": {
     "lint": "eslint ./ --cache",
-    "test": "rm -rfv ./.geoip && mocha tests",
+    "test": "rm -rfv ./.geoip && mocha tests --bail",
     "prepare": "husky || true"
   }
 }

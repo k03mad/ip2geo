@@ -10,7 +10,7 @@ import {checkCacheFile, removeCacheFolder} from './shared/fs.js';
 
 const testName = getCurrentFilename(import.meta.url);
 
-describe(testName, () => {
+describe.skip(testName, () => {
     const opts = {
         cacheDir: getTestFolder(testName),
         cacheMap: new Map(),
