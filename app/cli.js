@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import {log, logErrorExit} from '@k03mad/simple-log';
 import chalk from 'chalk';
 
 import {DEFAULT_CACHE_FILE_DIR, DEFAULT_CACHE_FILE_NEWLINE, DEFAULT_CACHE_FILE_SEPARATOR, ip2geo} from './api.js';
@@ -18,7 +17,7 @@ const isPrune = args.includes('-p') || args.includes('--prune');
 if (isHelp) {
     const cmd = `${codeText('$')} ${nameText('ip2geo')}`;
 
-    log([
+    console.log([
         '',
         codeText('# current external ip'),
         cmd,
@@ -36,14 +35,14 @@ if (isHelp) {
         codeText('# remove duplicate cache entries'),
         `${cmd} -p`,
         `${cmd} --prune`,
-    ]);
+    ].join('\n'));
 
     process.exit(0);
 }
 
 if (isPrune) {
     const cacheFolder = argsExtra[0] || DEFAULT_CACHE_FILE_DIR;
-    log(blue(cacheFolder));
+    console.log(blue(cacheFolder));
 
     try {
         const {
@@ -58,7 +57,7 @@ if (isPrune) {
             DEFAULT_CACHE_FILE_NEWLINE,
         );
 
-        log([
+        console.log([
             '',
             green(`Removed duplicate cache entries: ${bold(duplicates.length)}`),
             ...duplicates.map(elem => dim(`— ${elem}`)),
@@ -66,21 +65,22 @@ if (isPrune) {
             ...different.map(elem => dim(`— ${elem}`)),
             green(`Removed empty cache entries: ${bold(empty.length)}`),
             ...empty.map(elem => dim(`— ${elem}`)),
-        ]);
+        ].join('\n'));
 
         if (longLinesFiles.length > 0) {
-            log([
+            console.log([
                 red(`Required manual check, some cache files has too long lines: ${bold(longLinesFiles.length)}`),
                 ...longLinesFiles.map(({file, elem}) => dim(`— ${file}\n|— ${elem}`)),
-            ]);
+            ].join('\n'));
         }
 
-        log([
+        console.log([
             '',
             green(`Current cache entries: ${bold(entries)}`),
-        ]);
+        ].join('\n'));
     } catch (err) {
-        logErrorExit(red(err));
+        console.error(red(err));
+        process.exit(1);
     }
 } else {
     const output = argsExtra.length === 0
@@ -90,8 +90,8 @@ if (isPrune) {
     const flatten = output.flat();
 
     if (args.includes('--json') || args.includes('-j')) {
-        log(JSON.stringify(flatten.length > 1 ? flatten : flatten[0]));
+        console.log(JSON.stringify(flatten.length > 1 ? flatten : flatten[0]));
     } else {
-        log(flatten);
+        flatten.forEach(elem => console.log(elem));
     }
 }
