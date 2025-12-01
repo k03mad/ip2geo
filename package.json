@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "12.16.2",
+  "version": "12.16.3",
   "description": "GeoIP library",
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
@@ -19,7 +19,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@k03mad/request": "7.23.0",
+    "@k03mad/request": "7.23.2",
     "chalk": "5.6.2",
     "debug": "4.4.3",
     "is-ip": "5.0.1"
