@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "12.17.0",
+  "version": "13.0.0",
   "description": "GeoIP library",
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
@@ -16,7 +16,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=24"
   },
   "dependencies": {
     "@k03mad/request": "7.25.0",
