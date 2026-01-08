@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "15.0.0",
+  "version": "16.0.0",
   "description": "GeoIP library",
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
@@ -19,13 +19,13 @@
     "node": ">=24"
   },
   "dependencies": {
-    "@k03mad/request": "10.0.0",
+    "@k03mad/request": "11.0.0",
     "chalk": "5.6.2",
     "debug": "4.4.3",
     "is-ip": "5.0.1"
   },
   "devDependencies": {
-    "@k03mad/eslint-config": "31.0.0",
+    "@k03mad/eslint-config": "32.0.0",
     "eslint": "9.39.2",
     "husky": "9.1.7",
     "mocha": "11.7.5",
