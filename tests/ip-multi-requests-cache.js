@@ -26,10 +26,11 @@ describe(testName, () => {
         });
     });
 
-    it('should have cache file', () => checkCacheFile({
-        ...opts,
-        response: REQUEST_IPV4,
-    }));
+    it('should have cache file', () =>
+        checkCacheFile({
+            ...opts,
+            response: REQUEST_IPV4,
+        }));
 
     it('should have 1 correct cache entry', () => {
         assert.equal(opts.cacheMap.size, 1);

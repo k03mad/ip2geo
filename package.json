@@ -2,37 +2,38 @@
   "name": "@k03mad/ip2geo",
   "version": "18.0.0",
   "description": "GeoIP library",
+  "license": "MIT",
   "maintainers": [
     "Kirill Molchanov <k03.mad@gmail.com"
   ],
-  "bin": {
-    "ip2geo": "app/cli.js"
-  },
-  "main": "app/api.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/k03mad/ip2geo.git"
   },
-  "license": "MIT",
+  "bin": {
+    "ip2geo": "app/cli.js"
+  },
   "type": "module",
-  "engines": {
-    "node": ">=24"
+  "main": "app/api.js",
+  "scripts": {
+    "lint": "oxlint --report-unused-disable-directives && oxfmt --check",
+    "test": "rm -rfv ./.geoip && mocha tests --bail",
+    "prepare": "husky || true"
   },
   "dependencies": {
-    "@k03mad/request": "13.0.0",
+    "@k03mad/request": "14.0.1",
     "chalk": "5.6.2",
     "debug": "4.4.3",
     "is-ip": "5.0.1"
   },
   "devDependencies": {
-    "@k03mad/eslint-config": "34.1.0",
-    "eslint": "9.39.2",
+    "@k03mad/oxlint-config": "0.0.16",
     "husky": "9.1.7",
-    "mocha": "11.7.5"
+    "mocha": "11.7.5",
+    "oxfmt": "0.34.0",
+    "oxlint": "1.49.0"
   },
-  "scripts": {
-    "lint": "eslint ./ --cache",
-    "test": "rm -rfv ./.geoip && mocha tests --bail",
-    "prepare": "husky || true"
+  "engines": {
+    "node": ">=24"
   }
 }

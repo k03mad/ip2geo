@@ -69,11 +69,7 @@ export const ip2geo = async ({
     concurrency,
 } = {}) => {
     if (ip) {
-        const mapCache = readFromMapCache(
-            ip,
-            cacheMap,
-            cacheMapMaxEntries,
-        );
+        const mapCache = readFromMapCache(ip, cacheMap, cacheMapMaxEntries);
 
         if (mapCache) {
             return mapCache;
@@ -88,11 +84,7 @@ export const ip2geo = async ({
         );
 
         if (fsCache) {
-            writeToMapCache(
-                fsCache,
-                cacheMap,
-                cacheMapMaxEntries,
-            );
+            writeToMapCache(fsCache, cacheMap, cacheMapMaxEntries);
 
             return fsCache;
         }
@@ -112,11 +104,11 @@ export const ip2geo = async ({
     const {body} = await request(reqUrl, {}, queueOpts);
 
     if (!body?.ip) {
-        throw new Error([
-            'API error',
-            `request: ${reqUrl}`,
-            `response body: ${JSON.stringify(body)}`,
-        ].join('\n'));
+        throw new Error(
+            ['API error', `request: ${reqUrl}`, `response body: ${JSON.stringify(body)}`].join(
+                '\n',
+            ),
+        );
     }
 
     const outputData = collectOutputData([
@@ -135,11 +127,7 @@ export const ip2geo = async ({
         body?.connection?.domain,
     ]);
 
-    writeToMapCache(
-        outputData,
-        cacheMap,
-        cacheMapMaxEntries,
-    );
+    writeToMapCache(outputData, cacheMap, cacheMapMaxEntries);
 
     await writeToFsCache(
         body.ip,

@@ -11,10 +11,7 @@ import {removeCacheFolder} from './shared/fs.js';
 const testName = getCurrentFilename(import.meta.url);
 
 describe(testName, () => {
-    const responses = [
-        {ip: '10.10.10.10'},
-        {ip: 'test'},
-    ];
+    const responses = [{ip: '10.10.10.10'}, {ip: 'test'}];
 
     const opts = {
         cacheDir: getTestFolder(testName),

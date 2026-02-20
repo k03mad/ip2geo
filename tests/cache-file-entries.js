@@ -27,10 +27,11 @@ describe(testName, () => {
                 assert.deepEqual(data, REQUEST_IPV4);
             });
 
-            it('should have cache file', () => checkCacheFile({
-                ...opts,
-                response: REQUEST_IPV4,
-            }));
+            it('should have cache file', () =>
+                checkCacheFile({
+                    ...opts,
+                    response: REQUEST_IPV4,
+                }));
         });
     });
 });

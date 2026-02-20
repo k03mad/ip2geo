@@ -19,9 +19,10 @@ describe(testName, () => {
             assert.deepEqual(data, REQUEST_IPV4);
         });
 
-        it('should have cache file', () => checkCacheFile({
-            response: REQUEST_IPV4,
-        }));
+        it('should have cache file', () =>
+            checkCacheFile({
+                response: REQUEST_IPV4,
+            }));
 
         it('should have 1 correct cache entry', () => {
             assert.equal(cacheStorage.size, 1);

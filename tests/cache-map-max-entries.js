@@ -10,13 +10,7 @@ import {removeCacheFolder} from './shared/fs.js';
 const testName = getCurrentFilename(import.meta.url);
 
 describe(testName, () => {
-    const firstReqIps = [
-        '10.10.10.10',
-        '20.20.20.20',
-        '30.30.30.30',
-        '40.40.40.40',
-        '50.50.50.50',
-    ];
+    const firstReqIps = ['10.10.10.10', '20.20.20.20', '30.30.30.30', '40.40.40.40', '50.50.50.50'];
 
     const secondReqIps = ['60.60.60.60'];
 

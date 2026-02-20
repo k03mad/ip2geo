@@ -15,11 +15,7 @@ describe(testName, () => {
     const SUBFOLDERS = 5;
 
     const opts = {
-        cacheDir: getTestFolder(
-            path.join(
-                ...Array.from({length: SUBFOLDERS}, () => testName),
-            ),
-        ),
+        cacheDir: getTestFolder(path.join(...Array.from({length: SUBFOLDERS}, () => testName))),
         cacheMap: new Map(),
     };
 
@@ -30,8 +26,9 @@ describe(testName, () => {
         assert.deepEqual(data, REQUEST_IPV4);
     });
 
-    it('should have cache file', () => checkCacheFile({
-        ...opts,
-        response: REQUEST_IPV4,
-    }));
+    it('should have cache file', () =>
+        checkCacheFile({
+            ...opts,
+            response: REQUEST_IPV4,
+        }));
 });

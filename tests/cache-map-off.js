@@ -23,10 +23,11 @@ describe(testName, () => {
         assert.deepEqual(data, REQUEST_IPV4_MAP_OFF_ONLY);
     });
 
-    it('should have cache file', () => checkCacheFile({
-        ...opts,
-        response: REQUEST_IPV4_MAP_OFF_ONLY,
-    }));
+    it('should have cache file', () =>
+        checkCacheFile({
+            ...opts,
+            response: REQUEST_IPV4_MAP_OFF_ONLY,
+        }));
 
     it('should not have cache entries', () => {
         assert.equal(cacheStorage.size, 0);

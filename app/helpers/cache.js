@@ -32,9 +32,7 @@ export const collectOutputData = dataArr => {
     const outputData = {};
 
     outputKeys.forEach((key, i) => {
-        outputData[key] = key === 'connectionAsn' && dataArr[i]
-            ? Number(dataArr[i])
-            : dataArr[i];
+        outputData[key] = key === 'connectionAsn' && dataArr[i] ? Number(dataArr[i]) : dataArr[i];
     });
 
     return outputData;
@@ -59,7 +57,13 @@ const getCacheFileFullPath = (ip, cacheDir, cacheFileName) => {
  * @param {string} cacheFileNewline
  * @returns {Promise<object>}
  */
-export const readFromFsCache = async (ip, cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline) => {
+export const readFromFsCache = async (
+    ip,
+    cacheDir,
+    cacheFileName,
+    cacheFileSeparator,
+    cacheFileNewline,
+) => {
     const cacheFileFull = getCacheFileFullPath(ip, cacheDir, cacheFileName);
 
     try {
@@ -97,12 +101,23 @@ export const readFromFsCache = async (ip, cacheDir, cacheFileName, cacheFileSepa
  * @param {string} cacheFileNewline
  * @returns {Promise<void>}
  */
-export const writeToFsCache = async (ip, data, cacheDir, cacheFileName, cacheFileSeparator, cacheFileNewline) => {
+export const writeToFsCache = async (
+    ip,
+    data,
+    cacheDir,
+    cacheFileName,
+    cacheFileSeparator,
+    cacheFileNewline,
+) => {
     const cacheFileFull = getCacheFileFullPath(ip, cacheDir, cacheFileName);
     debug('set to fs cache: %o %o', cacheFileFull, data);
 
     await fs.mkdir(cacheDir, {recursive: true});
-    await fs.appendFile(cacheFileFull, cacheFileNewline + Object.values(data).join(cacheFileSeparator));
+
+    await fs.appendFile(
+        cacheFileFull,
+        cacheFileNewline + Object.values(data).join(cacheFileSeparator),
+    );
 };
 
 /**
@@ -164,30 +179,36 @@ export const writeToMapCache = (body, cacheMap, cacheMapMaxEntries) => {
 export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline) => {
     const files = await fs.readdir(cacheDir);
 
-    await Promise.all(files.map(async file => {
-        const fullFilePath = path.join(cacheDir, file);
+    await Promise.all(
+        files.map(async file => {
+            const fullFilePath = path.join(cacheDir, file);
 
-        const [stat, data] = await Promise.all([
-            fs.lstat(fullFilePath),
-            fs.readFile(fullFilePath, {encoding: 'utf8'}),
-        ]);
+            const [stat, data] = await Promise.all([
+                fs.lstat(fullFilePath),
+                fs.readFile(fullFilePath, {encoding: 'utf8'}),
+            ]);
 
-        const firstIp = data
-            ?.split(cacheFileNewline)
-            ?.find(Boolean)
-            ?.split(cacheFileSeparator)[0];
+            const firstIp = data
+                ?.split(cacheFileNewline)
+                ?.find(Boolean)
+                ?.split(cacheFileSeparator)[0];
 
-        if (stat.isDirectory() || (firstIp && !isIP(firstIp))) {
-            throw new Error(`Folder has subfolders or files without IPs, wrong cache folder arg?\n${fullFilePath}`);
-        }
-    }));
-
-    const cacheLineToNum = line => Number(
-        line.split(cacheFileSeparator)[0]
-            .split('.')
-            .map(num => `00${num}`.slice(-3))
-            .join(''),
+            if (stat.isDirectory() || (firstIp && !isIP(firstIp))) {
+                throw new Error(
+                    `Folder has subfolders or files without IPs, wrong cache folder arg?\n${fullFilePath}`,
+                );
+            }
+        }),
     );
+
+    const cacheLineToNum = line =>
+        Number(
+            line
+                .split(cacheFileSeparator)[0]
+                .split('.')
+                .map(num => `00${num}`.slice(-3))
+                .join(''),
+        );
 
     const duplicates = new Set();
     const different = new Set();
@@ -195,50 +216,53 @@ export const pruneCache = async (cacheDir, cacheFileSeparator, cacheFileNewline)
     const longLinesFiles = new Set();
     let entries = 0;
 
-    await Promise.all(files.map(async file => {
-        const fullFilePath = path.join(cacheDir, file);
+    await Promise.all(
+        files.map(async file => {
+            const fullFilePath = path.join(cacheDir, file);
 
-        const data = await fs.readFile(fullFilePath, {encoding: 'utf8'});
-        const dataArr = data.split(cacheFileNewline).filter(Boolean);
+            const data = await fs.readFile(fullFilePath, {encoding: 'utf8'});
+            const dataArr = data.split(cacheFileNewline).filter(Boolean);
 
-        const dataArrRemoveEmpty = dataArr.filter(elem => {
-            const splitted = elem.split(cacheFileSeparator);
+            const dataArrRemoveEmpty = dataArr.filter(elem => {
+                const splitted = elem.split(cacheFileSeparator);
 
-            if (splitted.length > outputKeys.length) {
-                longLinesFiles.add({file: fullFilePath, elem});
-            }
+                if (splitted.length > outputKeys.length) {
+                    longLinesFiles.add({file: fullFilePath, elem});
+                }
 
-            if (splitted.filter(Boolean).length > 1) {
+                if (splitted.filter(Boolean).length > 1) {
+                    return true;
+                }
+
+                empty.push(elem);
+            });
+
+            const uniqSorted = [...new Set(dataArrRemoveEmpty)].toSorted(
+                (a, b) => cacheLineToNum(a) - cacheLineToNum(b),
+            );
+
+            getArrayDups(dataArrRemoveEmpty).forEach(dup => duplicates.add(dup));
+            const dupsIp = getArrayDups(uniqSorted.map(elem => elem.split(cacheFileSeparator)[0]));
+
+            const removeDiffs = uniqSorted.filter(elem => {
+                if (dupsIp.includes(elem.split(cacheFileSeparator)[0])) {
+                    different.add(elem);
+                    return false;
+                }
+
                 return true;
+            });
+
+            const fileContent = removeDiffs.join(cacheFileNewline).trim();
+
+            if (fileContent) {
+                await fs.writeFile(fullFilePath, fileContent);
+                entries += removeDiffs.length;
+            } else {
+                await fs.rm(fullFilePath);
             }
-
-            empty.push(elem);
-        });
-
-        const uniqSorted = [...new Set(dataArrRemoveEmpty)]
-            .toSorted((a, b) => cacheLineToNum(a) - cacheLineToNum(b));
-
-        getArrayDups(dataArrRemoveEmpty).forEach(dup => duplicates.add(dup));
-        const dupsIp = getArrayDups(uniqSorted.map(elem => elem.split(cacheFileSeparator)[0]));
-
-        const removeDiffs = uniqSorted.filter(elem => {
-            if (dupsIp.includes(elem.split(cacheFileSeparator)[0])) {
-                different.add(elem);
-                return false;
-            }
-
-            return true;
-        });
-
-        const fileContent = removeDiffs.join(cacheFileNewline).trim();
-
-        if (fileContent) {
-            await fs.writeFile(fullFilePath, fileContent);
-            entries += removeDiffs.length;
-        } else {
-            await fs.rm(fullFilePath);
-        }
-    }));
+        }),
+    );
 
     return {
         entries,

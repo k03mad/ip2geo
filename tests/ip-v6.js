@@ -23,8 +23,9 @@ describe.skip(testName, () => {
         assert.deepEqual(data, REQUEST_IPV6);
     });
 
-    it('should have cache file', () => checkCacheFile({
-        ...opts,
-        response: REQUEST_IPV6,
-    }));
+    it('should have cache file', () =>
+        checkCacheFile({
+            ...opts,
+            response: REQUEST_IPV6,
+        }));
 });
