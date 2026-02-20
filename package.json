@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "18.0.0",
+  "version": "18.0.1",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
@@ -21,13 +21,13 @@
     "prepare": "husky || true"
   },
   "dependencies": {
-    "@k03mad/request": "14.0.1",
+    "@k03mad/request": "14.0.2",
     "chalk": "5.6.2",
     "debug": "4.4.3",
     "is-ip": "5.0.1"
   },
   "devDependencies": {
-    "@k03mad/oxlint-config": "0.0.16",
+    "@k03mad/oxlint-config": "0.0.19",
     "husky": "9.1.7",
     "mocha": "11.7.5",
     "oxfmt": "0.34.0",
