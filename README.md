@@ -43,15 +43,15 @@ npm i @k03mad/ip2geo
 import {ip2geo} from '@k03mad/ip2geo';
 
 const info = await ip2geo({
-    ip: '1.1.1.1', // make key falsy to use current external IP
-    // defaults
-    cacheDir: path.join(os.tmpdir(), '.ip2geo'),
-    cacheFileName: 'ips.log',
-    cacheFileSeparator: ';;',
-    cacheFileNewline: '\n',
-    cacheMap: new Map(),
-    cacheMapMaxEntries: Number.POSITIVE_INFINITY, // store last N requests, 0 — turns cache map off
-    rps: 3, // API RPS, useful in Promise.all with IPs array
+  ip: '1.1.1.1', // make key falsy to use current external IP
+  // defaults
+  cacheDir: path.join(os.tmpdir(), '.ip2geo'),
+  cacheFileName: 'ips.log',
+  cacheFileSeparator: ';;',
+  cacheFileNewline: '\n',
+  cacheMap: new Map(),
+  cacheMapMaxEntries: Number.POSITIVE_INFINITY, // store last N requests, 0 — turns cache map off
+  rps: 3 // API RPS, useful in Promise.all with IPs array
 });
 
 // info {
