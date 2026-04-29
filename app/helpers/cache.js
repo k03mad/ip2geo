@@ -25,7 +25,7 @@ const outputKeys = [
 ];
 
 /**
- * @param {Array<string>} dataArr
+ * @param {string[]} dataArr
  * @returns {object}
  */
 export const collectOutputData = dataArr => {
@@ -124,7 +124,7 @@ export const writeToFsCache = async (
  * @param {string} ip
  * @param {Map} cacheMap
  * @param {number} cacheMapMaxEntries
- * @returns {object|undefined}
+ * @returns {object | undefined}
  */
 export const readFromMapCache = (ip, cacheMap, cacheMapMaxEntries) => {
     if (cacheMapMaxEntries > 0) {

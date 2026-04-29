@@ -9,9 +9,7 @@ import {
     DEFAULT_CACHE_FILE_SEPARATOR,
 } from '../../app/api.js';
 
-/**
- * @param {string} cacheDir
- */
+/** @param {string} cacheDir */
 export const removeCacheFolder = async (cacheDir = DEFAULT_CACHE_FILE_DIR) => {
     try {
         await fs.rm(cacheDir, {recursive: true, force: true});
