@@ -41,3 +41,5 @@ minimumReleaseAgeExclude:
   - '@oxlint/binding-win32-x64-msvc@1.68.0'
   - oxfmt@0.53.0
   - oxlint@1.68.0
+  - '@k03mad/oxlint-config@0.9.1'
+  - '@k03mad/request@15.3.1'
