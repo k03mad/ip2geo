@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "19.3.1",
+  "version": "19.3.2",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
@@ -16,18 +16,18 @@
   "type": "module",
   "main": "app/api.js",
   "scripts": {
-    "lint": "oxlint && oxfmt --check",
+    "lint": "oxlint -c node_modules/@k03mad/oxlint-config/.oxlintrc.json && oxfmt -c node_modules/@k03mad/oxlint-config/.oxfmtrc.json --check",
     "test": "rm -rfv ./.geoip && mocha tests --bail",
     "prepare": "husky || true"
   },
   "dependencies": {
-    "@k03mad/request": "15.3.1",
+    "@k03mad/request": "15.3.2",
     "chalk": "5.6.2",
     "debug": "4.4.3",
     "is-ip": "5.0.1"
   },
   "devDependencies": {
-    "@k03mad/oxlint-config": "0.9.1",
+    "@k03mad/oxlint-config": "0.9.2",
     "husky": "9.1.7",
     "mocha": "11.7.6",
     "oxfmt": "0.53.0",
