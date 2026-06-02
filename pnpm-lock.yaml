@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@k03mad/request':
-        specifier: 15.3.2
-        version: 15.3.2
+        specifier: 15.3.3
+        version: 15.3.3
       chalk:
         specifier: 5.6.2
         version: 5.6.2
@@ -22,8 +22,8 @@ importers:
         version: 5.0.1
     devDependencies:
       '@k03mad/oxlint-config':
-        specifier: 0.9.2
-        version: 0.9.2
+        specifier: 0.9.3
+        version: 0.9.3
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -43,12 +43,12 @@ packages:
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
 
-  '@k03mad/oxlint-config@0.9.2':
-    resolution: {integrity: sha512-dkBrz/OQjvsR2d0awusTdqQuLKMB672rn8iZmV8Y56dxHrvipm5Ru/N5XVxWzXQ8ZsqHeF4H0zdmXs2kNSZdJw==}
+  '@k03mad/oxlint-config@0.9.3':
+    resolution: {integrity: sha512-Pi3nfjrJcfxN3vM0IaABZ2vdblbCMM9oXcQuwX/GYwLsbpQBNzj5LrQcaq8AtRf5/9p1mArz45Ky1tnQxLzCPg==}
     engines: {node: '>=24'}
 
-  '@k03mad/request@15.3.2':
-    resolution: {integrity: sha512-JPJgPP4fmiBhS8rp1cifnYyT47L2D/m1onjSVg5isww91z0CiwD92rXUAsi5OaZ9rhhtFu2MToeoG5kPej9DCA==}
+  '@k03mad/request@15.3.3':
+    resolution: {integrity: sha512-/zRT41U6aUOTPZLE3NkyqZc+v0bf2qEppuRjMocSkbUBMflW1mGG8L048ntjZUXlmEB8k6kbKezpWzbSvEPCWg==}
     engines: {node: '>=24'}
 
   '@keyv/serialize@1.1.1':
@@ -780,9 +780,9 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@k03mad/oxlint-config@0.9.2': {}
+  '@k03mad/oxlint-config@0.9.3': {}
 
-  '@k03mad/request@15.3.2':
+  '@k03mad/request@15.3.3':
     dependencies:
       chalk: 5.6.2
       debug: 4.4.3(supports-color@8.1.1)
