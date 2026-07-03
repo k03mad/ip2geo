@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "19.4.0",
+  "version": "20.0.0",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
@@ -11,27 +11,30 @@
     "url": "git+https://github.com/k03mad/ip2geo.git"
   },
   "bin": {
-    "ip2geo": "app/cli.js"
+    "ip2geo": "cli.js"
   },
   "type": "module",
-  "main": "app/api.js",
+  "main": "app/api.ts",
   "scripts": {
-    "lint": "oxlint && oxfmt -c node_modules/@k03mad/oxlint-config/.oxfmtrc.json --check",
-    "test": "rm -rfv ./.geoip && mocha tests --bail",
+    "lint": "oxlint && oxfmt -c node_modules/@k03mad/oxlint-config/.oxfmtrc.json --check && tsc --noEmit",
+    "test": "rm -rfv ./.geoip && node --test tests/*.ts",
     "prepare": "husky || true"
   },
   "dependencies": {
-    "@k03mad/request": "15.4.0",
     "chalk": "5.6.2",
     "debug": "4.4.3",
-    "is-ip": "5.0.1"
+    "is-ip": "5.0.1",
+    "tsx": "4.23.0"
   },
   "devDependencies": {
-    "@k03mad/oxlint-config": "0.10.1",
+    "@k03mad/oxlint-config": "0.11.0",
+    "@tsconfig/strictest": "2.0.8",
+    "@types/debug": "4.1.12",
+    "@types/node": "26.1.0",
     "husky": "9.1.7",
-    "mocha": "11.7.6",
     "oxfmt": "0.57.0",
-    "oxlint": "1.72.0"
+    "oxlint": "1.72.0",
+    "typescript": "6.0.3"
   },
   "engines": {
     "node": ">=24"
