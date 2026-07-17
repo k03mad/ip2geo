@@ -1,3 +1,4 @@
-#!/usr/bin/env -S node --import tsx
+#!/usr/bin/env node
+import {tsImport} from 'tsx/esm/api';
 
-import './app/cli.ts';
+await tsImport('./app/cli.ts', import.meta.url);
