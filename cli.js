@@ -1,3 +1,3 @@
-#!/usr/bin/env node --import tsx
+#!/usr/bin/env -S node --import tsx
 
 import './app/cli.ts';
