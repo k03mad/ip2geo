@@ -27,8 +27,8 @@ export const REQUEST_IPV4_MAP_OFF_ONLY: ReqOutput = {
   regionCode: 'CA',
   city: 'Berkeley',
   connectionAsn: 19_281,
-  connectionOrg: 'Quad',
-  connectionIsp: 'Quad',
+  connectionOrg: 'Quad9',
+  connectionIsp: 'Quad9',
   connectionDomain: 'quad9.net',
 };
 
