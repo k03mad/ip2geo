@@ -1,6 +1,8 @@
 import os from 'node:os';
 import path from 'node:path';
 
+import type {ReqInput, ReqOutput} from '../api.d.ts';
+
 import {
   collectOutputData,
   readFromFsCache,
@@ -8,7 +10,6 @@ import {
   writeToFsCache,
   writeToMapCache,
 } from './helpers/cache.ts';
-import type {ReqOutput} from './types.ts';
 
 const API = 'https://ipwho.is/';
 
@@ -17,16 +18,6 @@ export const DEFAULT_CACHE_FILE_NAME = 'ip.log';
 export const DEFAULT_CACHE_FILE_SEPARATOR = ';;';
 export const DEFAULT_CACHE_FILE_NEWLINE = '\n';
 export const DEFAULT_CACHE_MAP_MAX_ENTRIES = Number.POSITIVE_INFINITY;
-
-export interface ReqInput {
-  ip?: string;
-  cacheDir?: string;
-  cacheFileName?: string;
-  cacheFileSeparator?: string;
-  cacheFileNewline?: string;
-  cacheMap?: Map<string, ReqOutput>;
-  cacheMapMaxEntries?: number;
-}
 
 interface ApiResponseBody {
   ip?: string;

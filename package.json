@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "21.0.0",
+  "version": "21.0.1",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
@@ -15,6 +15,7 @@
   },
   "type": "module",
   "main": "api.js",
+  "types": "api.d.ts",
   "scripts": {
     "lint": "oxlint && oxfmt -c node_modules/@k03mad/oxlint-config/.oxfmtrc.json --check && tsc --noEmit",
     "test": "rm -rfv ./.geoip && node --test tests/*.ts",

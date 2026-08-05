@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import {describe, it} from 'node:test';
 
+import type {ReqOutput} from '../api.d.ts';
 import {cacheStorage, ip2geo} from '../app/api.ts';
-import type {ReqOutput} from '../app/types.ts';
 
 import {getCurrentFilename} from './helpers/path.ts';
 import {REQUEST_IPV4} from './shared/consts.ts';

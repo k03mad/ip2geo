@@ -4,7 +4,7 @@ import path from 'node:path';
 import _debug from 'debug';
 import {isIP} from 'is-ip';
 
-import type {ReqOutput} from '../types.ts';
+import type {ReqOutput} from '../../api.d.ts';
 
 import {getArrayDups} from './utils.ts';
 

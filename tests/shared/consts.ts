@@ -1,4 +1,4 @@
-import type {ReqOutput} from '../../app/types.ts';
+import type {ReqOutput} from '../../api.d.ts';
 
 export const REQUEST_IPV4: ReqOutput = {
   ip: '8.8.8.8',

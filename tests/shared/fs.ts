@@ -2,13 +2,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
+import type {ReqOutput} from '../../api.d.ts';
 import {
   DEFAULT_CACHE_FILE_DIR,
   DEFAULT_CACHE_FILE_NAME,
   DEFAULT_CACHE_FILE_NEWLINE,
   DEFAULT_CACHE_FILE_SEPARATOR,
 } from '../../app/api.ts';
-import type {ReqOutput} from '../../app/types.ts';
 
 interface CheckCacheFileOpts {
   cacheDir?: string;

@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import path from 'node:path';
 import {describe, it} from 'node:test';
 
+import type {ReqOutput} from '../api.d.ts';
 import {ip2geo} from '../app/api.ts';
-import type {ReqOutput} from '../app/types.ts';
 
 import {getCurrentFilename, getTestFolder} from './helpers/path.ts';
 import {REQUEST_IPV4} from './shared/consts.ts';
