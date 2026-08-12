@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "21.0.2",
+  "version": "21.0.3",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
@@ -13,6 +13,14 @@
   "bin": {
     "ip2geo": "cli.js"
   },
+  "files": [
+    "api.d.ts",
+    "api.js",
+    "app",
+    "cli.js",
+    "LICENSE",
+    "README.md"
+  ],
   "type": "module",
   "main": "api.js",
   "types": "api.d.ts",
