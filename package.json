@@ -1,10 +1,10 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "21.0.3",
+  "version": "21.0.4",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
-    "Kirill Molchanov <k03.mad@gmail.com"
+    "Kirill Molchanov <k03.mad@gmail.com>"
   ],
   "repository": {
     "type": "git",

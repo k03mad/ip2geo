@@ -45,8 +45,8 @@ import {ip2geo} from '@k03mad/ip2geo';
 const info = await ip2geo({
   ip: '1.1.1.1', // make key falsy to use current external IP
   // defaults
-  cacheDir: path.join(os.tmpdir(), '.ip2geo'),
-  cacheFileName: 'ips.log',
+  cacheDir: path.join(os.tmpdir(), '.ip2geo-cache'),
+  cacheFileName: 'ip.log',
   cacheFileSeparator: ';;',
   cacheFileNewline: '\n',
   cacheMap: new Map(),
