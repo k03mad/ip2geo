@@ -39,7 +39,7 @@
     "@k03mad/oxlint-config": "0.12.2",
     "@tsconfig/strictest": "2.0.8",
     "@types/debug": "4.1.13",
-    "@types/node": "26.1.2",
+    "@types/node": "26.4.0",
     "husky": "9.1.7",
     "oxfmt": "0.62.0",
     "oxlint": "1.77.0",
