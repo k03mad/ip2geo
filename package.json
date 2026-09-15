@@ -33,7 +33,7 @@
     "chalk": "6.0.0",
     "debug": "4.4.3",
     "is-ip": "5.0.1",
-    "tsx": "4.23.8"
+    "tsx": "4.23.12"
   },
   "devDependencies": {
     "@k03mad/oxlint-config": "0.12.2",
