@@ -1,6 +1,6 @@
 {
   "name": "@k03mad/ip2geo",
-  "version": "21.1.0",
+  "version": "21.2.0",
   "description": "GeoIP library",
   "license": "MIT",
   "maintainers": [
@@ -36,7 +36,7 @@
     "tsx": "4.23.13"
   },
   "devDependencies": {
-    "@k03mad/oxlint-config": "0.12.5",
+    "@k03mad/oxlint-config": "0.13.0",
     "@tsconfig/strictest": "2.0.8",
     "@types/debug": "4.1.13",
     "@types/node": "26.4.0",
